@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "pnpm dev",
-    "beforeBuildCommand": "pnpm build",
+    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "yarn build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": false
@@ -19,13 +19,13 @@
       },
       "externalBin": [],
       "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
+        "icons/graph-icon16.ico",
+        "icons/graph-icon32.ico",
+        "icons/graph-icon64.ico",
+        "icons/graph-icon128.ico",
         "icons/icon.ico"
       ],
-      "identifier": "com.yourname.dev",
+      "identifier": "com.graf-v2.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -52,16 +52,8 @@
         {
           "scheme": "https",
           "domain": "tauri.localhost",
-          "windows": [
-            "main"
-          ],
-          "plugins": [
-            "app",
-            "os",
-            "shell",
-            "window",
-            "event"
-          ]
+          "windows": ["main"],
+          "plugins": ["app", "os", "shell", "window", "event"]
         }
       ]
     },
