@@ -2,7 +2,7 @@
 module.exports = {
   endOfLine: "lf",
   semi: false,
-  singleQuote: false,
+  singleQuote: true,
   tabWidth: 2,
   trailingComma: "es5",
   importOrder: [
@@ -22,9 +22,10 @@ module.exports = {
     "",
     "^[./]",
   ],
-  importOrderSeparation: false,
+  importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   importOrderBuiltinModulesToTop: true,
+  jsxSingleQuote: true,
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderMergeDuplicateImports: true,
   importOrderCombineTypeAndValueImports: true,
