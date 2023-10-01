@@ -1,13 +1,14 @@
 import * as React from 'react'
+
 import {
   csvFileColum,
+  IFileType,
   IGraftImpedanceType,
   IGraftState,
   IGrafType,
   INotification,
-  ProcessFile,
-  IFileType,
   IPlatform,
+  ProcessFile,
 } from '../interfaces/interfaces'
 
 export type GrafContextProps = {
@@ -25,6 +26,9 @@ export type GrafContextProps = {
   updateFile: (file: ProcessFile) => void
   updateCSVfileColumn: (csvFileColum: csvFileColum) => void
   setPlatform: (platform: IPlatform) => void
+  setIsFilesGrouped: (isFileGrouped: boolean) => void
 }
 
-export const GrafContext = React.createContext<GrafContextProps>({} as GrafContextProps)
+export const GrafContext = React.createContext<GrafContextProps>(
+  {} as GrafContextProps
+)

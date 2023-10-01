@@ -1,17 +1,17 @@
 import * as React from 'react'
 
-import { GrafContext } from './GraftContext'
 import {
-  IGraftState,
-  INotification,
-  IFileType,
-  IGrafType,
-  IGraftImpedanceType,
-  IStepBetweenPoints,
   csvFileColum,
-  ProcessFile,
+  IFileType,
+  IGraftImpedanceType,
+  IGraftState,
+  IGrafType,
+  INotification,
   IPlatform,
+  IStepBetweenPoints,
+  ProcessFile,
 } from '../interfaces/interfaces'
+import { GrafContext } from './GraftContext'
 import { graftReducer } from './graftReducer'
 
 export const INITIAL_STATE: IGraftState = {
@@ -21,7 +21,7 @@ export const INITIAL_STATE: IGraftState = {
     type: null,
   },
   state: {},
-  fileType: null,
+  fileType: 'teq4',
   loading: false,
   graftType: 'scatter',
   impedanceType: 'Nyquist',
@@ -31,6 +31,7 @@ export const INITIAL_STATE: IGraftState = {
   csvFileColum: [],
   files: [],
   platform: null,
+  isFilesGrouped: false,
 }
 
 interface props {
@@ -47,28 +48,38 @@ export const GraftProvider = ({ children, initialState }: props) => {
   const setSelectedFile = (selectedFileType: IFileType) =>
     dispatch({ type: 'setFileType', payload: selectedFileType })
 
-  const setGraftType = (type: IGrafType) => dispatch({ type: 'setGraftType', payload: type })
+  const setGraftType = (type: IGrafType) =>
+    dispatch({ type: 'setGraftType', payload: type })
 
   const setImpedanceType = (type: IGraftImpedanceType) =>
     dispatch({ type: 'setImpedanceType', payload: type })
 
   const setStepBetweenPoints = (step: IStepBetweenPoints) =>
     dispatch({ type: 'setStepBetweenPoints', payload: step })
-  const setLineOrPointWidth = (width: number) => dispatch({ type: 'setLineOrPointWidth', payload: width })
+  const setLineOrPointWidth = (width: number) =>
+    dispatch({ type: 'setLineOrPointWidth', payload: width })
 
-  const setDrawerOpen = (open: boolean) => dispatch({ type: 'setDrawerOpen', payload: open })
+  const setDrawerOpen = (open: boolean) =>
+    dispatch({ type: 'setDrawerOpen', payload: open })
 
   const setSelectedColumns = (filesColumns: csvFileColum[]) =>
     dispatch({ type: 'setSelectedColumns', payload: filesColumns })
-  const setFiles = (files: ProcessFile[]) => dispatch({ type: 'setFiles', payload: files })
-  const setGraftState = (graftState: IGraftState) => dispatch({ type: 'setGraftState', payload: graftState })
+  const setFiles = (files: ProcessFile[]) =>
+    dispatch({ type: 'setFiles', payload: files })
+  const setGraftState = (graftState: IGraftState) =>
+    dispatch({ type: 'setGraftState', payload: graftState })
 
-  const updateFile = (file: ProcessFile) => dispatch({ type: 'updateFile', payload: file })
+  const updateFile = (file: ProcessFile) =>
+    dispatch({ type: 'updateFile', payload: file })
 
   const updateCSVfileColumn = (csvFileColum: csvFileColum) =>
     dispatch({ type: 'updateCSVfileColumn', payload: csvFileColum })
 
-  const setPlatform = (platform: IPlatform) => dispatch({ type: 'setPlatform', payload: platform })
+  const setPlatform = (platform: IPlatform) =>
+    dispatch({ type: 'setPlatform', payload: platform })
+  const setIsFilesGrouped = (isFileGrouped: boolean) =>
+    dispatch({ type: 'setIsFilesGrouped', payload: isFileGrouped })
+
   React.useEffect(() => {
     setGraftState(initialState)
   }, [initialState])
@@ -78,6 +89,7 @@ export const GraftProvider = ({ children, initialState }: props) => {
       value={{
         graftState,
         setNotification,
+        setIsFilesGrouped,
         setSelectedFile,
         setGraftType,
         setImpedanceType,

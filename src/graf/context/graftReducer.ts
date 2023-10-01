@@ -1,13 +1,13 @@
 import {
-  IGraftState,
-  INotification,
-  IFileType,
-  IGrafType,
-  IGraftImpedanceType,
-  IStepBetweenPoints,
   csvFileColum,
-  ProcessFile,
+  IFileType,
+  IGraftImpedanceType,
+  IGraftState,
+  IGrafType,
+  INotification,
   IPlatform,
+  IStepBetweenPoints,
+  ProcessFile,
 } from '../interfaces/interfaces'
 
 type GraftAction = {
@@ -25,6 +25,7 @@ type GraftAction = {
     | 'updateCSVfileColumn'
     | 'setPlatform'
     | 'setLineOrPointWidth'
+    | 'setIsFilesGrouped'
   payload:
     | INotification
     | IFileType
@@ -41,7 +42,10 @@ type GraftAction = {
     | IPlatform
 }
 
-export const graftReducer = (state: IGraftState, action: GraftAction): IGraftState => {
+export const graftReducer = (
+  state: IGraftState,
+  action: GraftAction
+): IGraftState => {
   switch (action.type) {
     case 'setNotification':
       return {
@@ -95,7 +99,7 @@ export const graftReducer = (state: IGraftState, action: GraftAction): IGraftSta
         ...(action.payload as IGraftState),
       }
     case 'updateFile': {
-      const files = state.files.map(file => {
+      const files = state.files.map((file) => {
         if (file.id === (action.payload as ProcessFile).id) {
           return action.payload as ProcessFile
         }
@@ -107,7 +111,7 @@ export const graftReducer = (state: IGraftState, action: GraftAction): IGraftSta
       }
     }
     case 'updateCSVfileColumn': {
-      const csvFileColum = state.csvFileColum.map(column => {
+      const csvFileColum = state.csvFileColum.map((column) => {
         if (column.id === (action.payload as csvFileColum).id) {
           return action.payload as csvFileColum
         }
@@ -122,6 +126,12 @@ export const graftReducer = (state: IGraftState, action: GraftAction): IGraftSta
       return {
         ...state,
         platform: action.payload as 'web' | 'desktop',
+      }
+    }
+    case 'setIsFilesGrouped': {
+      return {
+        ...state,
+        isFilesGrouped: action.payload as boolean,
       }
     }
 

@@ -21,6 +21,7 @@ export interface IGraftState {
   csvFileColum: csvFileColum[]
   files: ProcessFile[]
   platform: IPlatform
+  isFilesGrouped: boolean
 }
 
 export type IPlatform = 'web' | 'desktop' | null
@@ -31,7 +32,11 @@ export type IGraftImpedanceType = 'Bode' | 'Nyquist' | 'ZiZrVsFreq'
 
 export type IFileType = 'teq4Z' | 'teq4' | 'csv'
 
-export type IGraftData = 'IMPEDANCE_MODULE_FASE' | 'IMPEDANCE_ZiZr' | 'VC_V_vs_I' | 'VC_t_vs_I'
+export type IGraftData =
+  | 'IMPEDANCE_MODULE_FASE'
+  | 'IMPEDANCE_ZiZr'
+  | 'VC_V_vs_I'
+  | 'VC_t_vs_I'
 
 export type IStepBetweenPoints = number
 
