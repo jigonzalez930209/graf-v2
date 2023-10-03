@@ -63,7 +63,7 @@ export type ExportData = {
 }[]
 
 export type ProcessFile = {
-  id: number
+  id: string
   name: string
   type: 'teq4' | 'teq4Z' | 'csv'
   pointNumber?: number
@@ -94,7 +94,7 @@ export type Files = {
   files: File[]
 }
 export type csvFileColum = {
-  id: number
+  id: string
   fileName: string
   selected: boolean
   x?: columns
