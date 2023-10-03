@@ -1,3 +1,25 @@
 {
-  "cSpell.words": ["cmdk", "ianvs", "Plotly", "tauri", "taze"]
+  "cSpell.words": [
+    "autosize",
+    "cmdk",
+    "drawcircle",
+    "hovermode",
+    "hovertemplate",
+    "ianvs",
+    "legendgroup",
+    "modebar",
+    "Nyquist",
+    "Plotly",
+    "Relayout",
+    "tauri",
+    "taze",
+    "tickfont",
+    "titlefont",
+    "traceorder",
+    "Ungroup",
+    "voltametry",
+    "webp",
+    "xaxis",
+    "yaxis"
+  ]
 }
