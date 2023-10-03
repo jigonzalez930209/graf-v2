@@ -23,7 +23,7 @@ const extractSerialPoint = (
       const arrayFile = (element.content as string).split(/(?:\r\n|\r|\n)/g)
       const pointNumber = parseInt(arrayFile[105])
       const data = _.slice(arrayFile, 146, 146 + pointNumber)
-      const dataPoint: string[][] = data.map(line => line.split(','))
+      const dataPoint: string[][] = data.map((line) => line.split(','))
       const impedance: ProcessFile['impedance'] = {
         V: parseFloat(arrayFile[10].split(',')[1]),
         signalAmplitude: parseFloat(arrayFile[113].split(',')[0]),
@@ -32,7 +32,7 @@ const extractSerialPoint = (
         totalPoints: parseInt(arrayFile[105].split(',')[0]),
       }
       processFile.push({
-        id: i,
+        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
         type: 'teq4Z',
         name: element.name,
         color: COLORS[i],
@@ -54,7 +54,7 @@ const extractSerialPoint = (
       const totalTime = countX / samplesSec
 
       processFile.push({
-        id: i,
+        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
         color: COLORS[i],
         type: 'teq4',
         name: element.name,
@@ -70,7 +70,7 @@ const extractSerialPoint = (
       })
     } else if (fileType(element.name) === 'csv') {
       processFile.push({
-        id: i,
+        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
         color: COLORS[i],
         type: 'csv',
         name: element.name,

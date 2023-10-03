@@ -1,14 +1,14 @@
+import { open, save } from '@tauri-apps/plugin-dialog'
+import { metadata, readBinaryFile } from '@tauri-apps/plugin-fs'
+import { Store } from '@tauri-apps/plugin-store'
 import _ from 'lodash'
 import { read, utils, write } from 'xlsx'
-import { Store } from 'tauri-plugin-store-api'
-import { readBinaryFile } from '@tauri-apps/api/fs'
-import { open, save } from '@tauri-apps/api/dialog'
 
-import { ProcessFile, IGraftState } from '../interfaces/interfaces'
-
+import { IGraftState, ProcessFile } from '../interfaces/interfaces'
 import { extractSerialPoint, fileType } from './common'
 import { COLORS } from './utils'
-const Utf8ArrayToStr = (array: number[]): string => {
+
+const Utf8ArrayToStr = (array: Uint8Array): string => {
   let out, i, len, c
   let char2, char3
 
@@ -39,7 +39,9 @@ const Utf8ArrayToStr = (array: number[]): string => {
         // 1110 xxxx  10xx xxxx  10xx xxxx
         char2 = array[i++]
         char3 = array[i++]
-        out += String.fromCharCode(((c & 0x0f) << 12) | ((char2 & 0x3f) << 6) | ((char3 & 0x3f) << 0))
+        out += String.fromCharCode(
+          ((c & 0x0f) << 12) | ((char2 & 0x3f) << 6) | ((char3 & 0x3f) << 0)
+        )
         break
     }
   }
@@ -47,42 +49,58 @@ const Utf8ArrayToStr = (array: number[]): string => {
   return out
 }
 
-const readFileContents = async file => {
-  return new Promise((resolve, reject) => {
+const readFileContents = async (file) => {
+  return new Promise<Uint8Array>((resolve, reject) => {
     try {
-      resolve(readBinaryFile(file))
+      resolve(readBinaryFile(file.path))
     } catch (error) {
       reject(error)
     }
   })
 }
 
-const readAllTauriProcess = async AllFiles => {
+const readAllTauriProcess = async (AllFiles) => {
+  // await metadata('/path/to/file')
   let notSupported: string[] = []
+  let AllFilesArray = []
+  if (typeof AllFiles?.paths?.[0] === 'string') {
+    AllFilesArray = AllFiles.paths.map((file) => ({
+      name: file.match(/\\([^\\]+)$/)[1],
+      path: file,
+    }))
+  } else {
+    AllFilesArray = AllFiles
+  }
+
   const results = await Promise.all(
-    AllFiles.filter(file => {
-      const name = _.last(file.split(/\\/g)) as string
+    AllFilesArray.filter((file) => {
+      const name = _.last(file.name.split(/\\/g)) as string
       if (!['csv', 'teq4', 'teq4z'].includes(fileType(name))) {
         console.log(`File type not supported '${name}'`)
         notSupported.push(name)
         return false
       }
       return true
-    }).map(async file => {
+    }).map(async (file) => {
       const fileContents = await readFileContents(file)
-      const name = _.last(file.split(/\\/g)) as string
+      const name = _.last(file.name.split(/\\/g)) as string
 
       if (fileType(name) === 'csv') {
-        const contentXLSX = read(fileContents as number[], { type: 'array' })
-        const content = Object.values(utils.sheet_to_json(contentXLSX.Sheets[contentXLSX.SheetNames[0]])).map(
-          i => Object.values(i)
-        )
+        const contentXLSX = read(fileContents, { type: 'array' })
+        const content = Object.values(
+          utils.sheet_to_json(contentXLSX.Sheets[contentXLSX.SheetNames[0]])
+        ).map((i) => Object.values(i))
 
-        const columns = Object.keys(utils.sheet_to_json(contentXLSX.Sheets[contentXLSX.SheetNames[0]])[0])
+        const columns = Object.keys(
+          utils.sheet_to_json(contentXLSX.Sheets[contentXLSX.SheetNames[0]])[0]
+        )
         const invariableContent = [columns, ...content]
 
         const selectedInvariableContentIndex = invariableContent.reduce(
-          (acc, curr, index) => (curr.length > acc.value ? { value: curr.length, index: index } : acc),
+          (acc, curr, index) =>
+            curr.length > acc.value
+              ? { value: curr.length, index: index }
+              : acc,
           { index: 0, value: content[0].length }
         ).index
 
@@ -94,14 +112,14 @@ const readAllTauriProcess = async AllFiles => {
           columns: invariableContent[selectedInvariableContentIndex],
         }
       }
-      return { content: await Utf8ArrayToStr(fileContents as number[]), name }
+      return { content: await Utf8ArrayToStr(fileContents), name }
     })
   )
 
   return { results, notSupported }
 }
 
-const readAllFiles = async selected => {
+const readAllFiles = async (selected) => {
   const readAllFiles = await readAllTauriProcess(selected)
   const contents = await extractSerialPoint(await readAllFiles.results)
   return {
@@ -133,8 +151,11 @@ const readFilesUsingTauriProcess = async () => {
 const initStorage = async () => {
   const store = new Store('.settings.dat')
 
-  if ((await store.values()).length > 0 && !_.isEmpty(await store.get('files'))) {
-    return await store.get('files').then(f => f as ProcessFile[])
+  if (
+    (await store.values()).length > 0 &&
+    !_.isEmpty(await store.get('files'))
+  ) {
+    return await store.get('files').then((f) => f as ProcessFile[])
   }
   return [] as ProcessFile[]
 }
@@ -155,11 +176,12 @@ const openProject = async () => {
       filters: [{ name: 'Graft Project', extensions: ['graft'] }],
     })
 
-    const store = new Store(p.toString())
+    const store = new Store(p.path)
+
     data = await store
       .get('graft')
-      .then(d => d as IGraftState)
-      .catch(err => err)
+      .then((d) => d as IGraftState)
+      .catch((err) => err)
     notification = {
       message: 'Project opened successfully',
       variant: 'success',
@@ -181,7 +203,10 @@ const clearStorage = async () => {
 }
 
 const saveProject = async (s: IGraftState) => {
-  let notification: { message: string; variant: 'success' | 'error' }
+  let notification: { message: string; variant: 'success' | 'error' } = {
+    message: '',
+    variant: 'success',
+  }
   try {
     const p = await save({
       title: 'Save Project',
