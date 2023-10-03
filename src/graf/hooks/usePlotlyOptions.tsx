@@ -1,16 +1,16 @@
-import _ from 'lodash'
 import * as React from 'react'
+import _ from 'lodash'
 import { useWindowSize } from 'usehooks-ts'
 
 import { GrafContext } from '../context/GraftContext'
 import { COLORS } from '../utils/utils'
-
 import { useData } from './useData'
 
 const StaticValues = ({ drawerOpen = true, width = 720, height = 540 }) => ({
   autosize: true,
   width: drawerOpen ? width * 0.72 : width * 0.876,
   height: drawerOpen ? height * 0.8 : height * 0.8,
+  fillcolor: '#d3d3d3',
   legend: {
     x: 1.1,
     traceorder: 'normal',
@@ -67,7 +67,7 @@ const usePlotlyOptions = () => {
 
   const {
     getImpedanceData,
-    getModuleFase,
+    getModuleFace,
     getVCData,
     getZIZRvsFrequency,
     getCSVData,
@@ -75,7 +75,10 @@ const usePlotlyOptions = () => {
   } = useData()
 
   const [layout, setLayout] = React.useState(null)
-  const [config, setConfig] = React.useState({ scrollZoom: true, editable: true })
+  const [config, setConfig] = React.useState({
+    scrollZoom: true,
+    editable: true,
+  })
   const [data, setData] = React.useState([])
 
   React.useEffect(() => {
@@ -84,32 +87,38 @@ const usePlotlyOptions = () => {
         if (impedanceType === 'Bode') {
           setData(
             _.flatMapDepth(
-              getModuleFase().map((d, i) => [
+              getModuleFace().map((d, i) => [
                 {
-                  x: d.content.map(i => i.fase.x),
-                  y: d.content.map(i => i.fase.y),
+                  x: d.content.map((i) => i.face.x),
+                  y: d.content.map((i) => i.face.y),
                   type: 'scatter',
-                  hovertemplate: hovertemplate(`fase_${d.name}`),
+                  hovertemplate: hovertemplate(`face_${d.name}`),
                   mode: graftType === 'line' ? 'lines+markers' : 'markers',
-                  name: `fase_${d.name}`,
+                  name: `face_${d.name}`,
                   marker: {
                     color: d.color,
-                    size: graftType === 'line' ? lineOrPointWidth + 3 : lineOrPointWidth,
+                    size:
+                      graftType === 'line'
+                        ? lineOrPointWidth + 3
+                        : lineOrPointWidth,
                   },
                   line: { color: d.color, width: lineOrPointWidth },
                   yaxis: 'y2',
                   legendgroup: `${d.name}`,
                 },
                 {
-                  x: d.content.map(i => i.module.x),
-                  y: d.content.map(i => i.module.y),
+                  x: d.content.map((i) => i.module.x),
+                  y: d.content.map((i) => i.module.y),
                   type: 'scatter',
                   hovertemplate: hovertemplate(`module_${d.name}`),
                   mode: graftType === 'line' ? 'lines+markers' : 'markers',
                   name: `module_${d.name}`,
                   marker: {
                     color: d.color,
-                    size: graftType === 'line' ? lineOrPointWidth + 3 : lineOrPointWidth,
+                    size:
+                      graftType === 'line'
+                        ? lineOrPointWidth + 3
+                        : lineOrPointWidth,
                   },
 
                   line: { color: d.color, width: lineOrPointWidth },
@@ -159,11 +168,11 @@ const usePlotlyOptions = () => {
             },
             yaxis: {
               title: {
-                text: 'Fase',
+                text: 'Face',
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -171,22 +180,25 @@ const usePlotlyOptions = () => {
               title: 'Module',
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#7f7f7f', size: 18 },
-              tickfont: { color: '#7f7f7f' },
+              titlefont: { color: '#fff', size: 18 },
+              tickfont: { color: '#fff' },
             },
           })
         } else if (impedanceType === 'Nyquist') {
           setData(
-            getImpedanceData().map(d => ({
-              x: d.content.map(i => i[0]),
-              y: d.content.map(i => i[1]),
+            getImpedanceData().map((d) => ({
+              x: d.content.map((i) => i[0]),
+              y: d.content.map((i) => i[1]),
               hovertemplate: hovertemplate(d.name),
               type: 'scatter',
               mode: graftType === 'line' ? 'lines+markers' : 'markers',
               name: d.name,
               marker: {
                 color: d.color,
-                size: graftType === 'line' ? lineOrPointWidth + 3 : lineOrPointWidth,
+                size:
+                  graftType === 'line'
+                    ? lineOrPointWidth + 3
+                    : lineOrPointWidth,
               },
               line: { color: d.color, width: lineOrPointWidth },
             }))
@@ -218,7 +230,7 @@ const usePlotlyOptions = () => {
                 font: {
                   // family: 'Courier New, monospace',
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -228,7 +240,7 @@ const usePlotlyOptions = () => {
                 font: {
                   // family: 'Courier New, monospace',
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -236,25 +248,28 @@ const usePlotlyOptions = () => {
         } else if (impedanceType === 'ZiZrVsFreq') {
           setData(
             _.flatMapDepth(
-              getZIZRvsFrequency().map(d => [
+              getZIZRvsFrequency().map((d) => [
                 {
-                  x: d.content.map(j => j.Zi.x),
-                  y: d.content.map(j => j.Zi.y),
+                  x: d.content.map((j) => j.Zi.x),
+                  y: d.content.map((j) => j.Zi.y),
                   type: 'scatter',
                   hovertemplate: hovertemplate(`ZI_${d.name}`),
                   mode: graftType === 'line' ? 'lines+markers' : 'markers',
                   name: `ZI_${d.name}`,
                   marker: {
                     color: d.color,
-                    size: graftType === 'line' ? lineOrPointWidth + 3 : lineOrPointWidth,
+                    size:
+                      graftType === 'line'
+                        ? lineOrPointWidth + 3
+                        : lineOrPointWidth,
                   },
                   line: { color: d.color, width: lineOrPointWidth },
                   yaxis: 'y2',
                   legendgroup: `${d.name}`,
                 },
                 {
-                  x: d.content.map(j => j.Zr.x),
-                  y: d.content.map(j => j.Zr.y),
+                  x: d.content.map((j) => j.Zr.x),
+                  y: d.content.map((j) => j.Zr.y),
                   type: 'scatter',
                   hovertemplate: hovertemplate(`ZR_${d.name}`),
                   mode: graftType === 'line' ? 'lines+markers' : 'markers',
@@ -301,7 +316,7 @@ const usePlotlyOptions = () => {
                 text: 'log10(Frequency(Hz))',
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -311,7 +326,7 @@ const usePlotlyOptions = () => {
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -319,21 +334,24 @@ const usePlotlyOptions = () => {
               title: 'ZI',
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#7f7f7f', size: 18 },
-              tickfont: { color: '#7f7f7f' },
+              titlefont: { color: '#fff', size: 18 },
+              tickfont: { color: '#fff' },
             },
           })
         }
       } else if (fileType === 'teq4') {
         setData(
-          getVCData(stepBetweenPoints).map(d => ({
-            x: d.content.map(j => j[0]),
-            y: d.content.map(j => j[1]),
+          getVCData(stepBetweenPoints).map((d) => ({
+            x: d.content.map((j) => j[0]),
+            y: d.content.map((j) => j[1]),
             type: 'scatter',
             hovertemplate: hovertemplate(d.name),
             mode: graftType === 'line' ? 'lines' : 'markers',
             name: d.name,
-            marker: { color: d.color, size: graftType === 'line' ? 0 : lineOrPointWidth },
+            marker: {
+              color: d.color,
+              size: graftType === 'line' ? 0 : lineOrPointWidth,
+            },
             line: { color: d.color, width: lineOrPointWidth },
             color: d.color,
           }))
@@ -364,7 +382,7 @@ const usePlotlyOptions = () => {
               text: 'Voltage (mV)',
               font: {
                 size: 18,
-                color: '#7f7f7f',
+                color: '#fff',
               },
             },
           },
@@ -373,14 +391,18 @@ const usePlotlyOptions = () => {
               text: 'Current (mA)',
               font: {
                 size: 18,
-                color: '#7f7f7f',
+                color: '#fff',
               },
             },
           },
         })
       } else if (fileType === 'csv') {
         let csvData = getCSVData(
-          csvFileColum?.find(csv => csv.selected && !!currentData.find(d => d.name === csv.fileName)?.name)
+          csvFileColum?.find(
+            (csv) =>
+              csv.selected &&
+              !!currentData.find((d) => d.name === csv.fileName)?.name
+          )
         )
 
         if (csvData?.x?.length === 1) {
@@ -433,13 +455,17 @@ const usePlotlyOptions = () => {
           )
 
           setLayout({
-            ...StaticValues({ drawerOpen: drawerOpen, width: width, height: height }),
+            ...StaticValues({
+              drawerOpen: drawerOpen,
+              width: width,
+              height: height,
+            }),
             xaxis: {
               title: {
                 text: csvData.x[0].name,
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -449,7 +475,7 @@ const usePlotlyOptions = () => {
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -457,8 +483,8 @@ const usePlotlyOptions = () => {
               title: csvData.y2[0]?.name,
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#7f7f7f', size: 18 },
-              tickfont: { color: '#7f7f7f' },
+              titlefont: { color: '#fff', size: 18 },
+              tickfont: { color: '#fff' },
             },
           })
 
@@ -513,14 +539,18 @@ const usePlotlyOptions = () => {
           )
 
           setLayout({
-            ...StaticValues({ drawerOpen: drawerOpen, width: width, height: height }),
+            ...StaticValues({
+              drawerOpen: drawerOpen,
+              width: width,
+              height: height,
+            }),
             hovermode: 'closest',
             xaxis: {
               title: {
                 text: csvData.x[0].name,
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -530,7 +560,7 @@ const usePlotlyOptions = () => {
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: '#fff',
                 },
               },
             },
@@ -538,8 +568,8 @@ const usePlotlyOptions = () => {
               title: csvData.y2[0]?.name,
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#7f7f7f', size: 18 },
-              tickfont: { color: '#7f7f7f' },
+              titlefont: { color: '#fff', size: 18 },
+              tickfont: { color: '#fff' },
             },
           })
         } else {
@@ -547,7 +577,9 @@ const usePlotlyOptions = () => {
           setLayout({})
         }
       } else {
-        setLayout(StaticValues({ drawerOpen: drawerOpen, width: width, height: height }))
+        setLayout(
+          StaticValues({ drawerOpen: drawerOpen, width: width, height: height })
+        )
       }
 
       // set config and layout
@@ -574,7 +606,11 @@ const usePlotlyOptions = () => {
     lineOrPointWidth,
   ])
 
-  return { layout, config, data }
+  return {
+    layout: { plot_bgcolor: '#d3d3d3', paper_bgcolor: '#FFF3', ...layout },
+    config,
+    data,
+  }
 }
 
 export default usePlotlyOptions
