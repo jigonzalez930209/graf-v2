@@ -2,8 +2,11 @@ import * as React from 'react'
 import _ from 'lodash'
 
 import { GrafContext } from '../context/GraftContext'
-import { csvFileColum, IStepBetweenPoints, ProcessFile } from '../interfaces/interfaces'
-
+import {
+  csvFileColum,
+  IStepBetweenPoints,
+  ProcessFile,
+} from '../interfaces/interfaces'
 
 export const useData = () => {
   const {
@@ -20,13 +23,16 @@ export const useData = () => {
     setColumns([])
     if (payload?.length > 0) {
       let columns: csvFileColum[] = []
-      payload.forEach(file => {
+      payload.forEach((file) => {
         if (file.type === 'csv') {
           columns.push({
             id: file.id,
             fileName: file.name,
             selected: file.selected,
-            notSelected: file.csv.columns.map((name, index) => ({ name, index })),
+            notSelected: file.csv.columns.map((name, index) => ({
+              name,
+              index,
+            })),
             x: [],
             y: [],
             y2: [],
@@ -45,17 +51,21 @@ export const useData = () => {
     newSelectedIndex,
     fileName,
   }: {
-    id: number
+    id: string
     fileName: string
     newSelectedIndex: number
   }) => {
-    const selectedFile = graftState.files.find(file => file.id === id)
-    const selectedColumn = graftState.csvFileColum.find(c => c.fileName === fileName)
+    const selectedFile = graftState.files.find((file) => file.id === id)
+    const selectedColumn = graftState.csvFileColum.find(
+      (c) => c.fileName === fileName
+    )
 
-    const notSelected = selectedFile.invariableContent[newSelectedIndex].map((val, index) => ({
-      name: val,
-      index,
-    }))
+    const notSelected = selectedFile.invariableContent[newSelectedIndex].map(
+      (val, index) => ({
+        name: val,
+        index,
+      })
+    )
 
     updateFile({
       ...selectedFile,
@@ -77,18 +87,31 @@ export const useData = () => {
     })
   }
 
-  const changeSelectedFile = (id: number) => {
-    const file = graftState.files.find(file => file.id === id)
+  const changeSelectedFile = (id: string) => {
+    const file = graftState.files.find((file) => file.id === id)
 
     if (file.type === 'csv') {
       setSelectedFile('csv')
-      setFiles(graftState.files.map(file => ({ ...file, selected: file.id === id })))
-      setColumns(graftState.csvFileColum.map(c => ({ ...c, selected: c.fileName === file.name })))
+      setFiles(
+        graftState.files.map((file) => ({ ...file, selected: file.id === id }))
+      )
+      setColumns(
+        graftState.csvFileColum.map((c) => ({
+          ...c,
+          selected: c.fileName === file.name,
+        }))
+      )
     } else if (file.type === graftState.fileType) {
-      setFiles(graftState.files.map(file => (file.id === id ? { ...file, selected: !file.selected } : file)))
+      setFiles(
+        graftState.files.map((file) =>
+          file.id === id ? { ...file, selected: !file.selected } : file
+        )
+      )
     } else {
       setSelectedFile(file.type)
-      setFiles(graftState.files.map(file => ({ ...file, selected: file.id === id })))
+      setFiles(
+        graftState.files.map((file) => ({ ...file, selected: file.id === id }))
+      )
     }
   }
 
@@ -98,10 +121,10 @@ export const useData = () => {
     }
 
     return graftState.files
-      .filter(file => file.selected)
-      .map(file => ({
+      .filter((file) => file.selected)
+      .map((file) => ({
         ...file,
-        content: file.content.map(c => [
+        content: file.content.map((c) => [
           parseFloat(c[2]) * Math.cos((parseFloat(c[3]) * Math.PI) / 180),
           -parseFloat(c[2]) * Math.sin((parseFloat(c[3]) * Math.PI) / 180),
         ]),
@@ -109,30 +132,30 @@ export const useData = () => {
   }
   const getImpedanceDataNew = () => {
     return graftState.files
-      .filter(file => file.selected)
-      .map(file => ({
+      .filter((file) => file.selected)
+      .map((file) => ({
         ...file,
-        content: file.content.map(c => ({
+        content: file.content.map((c) => ({
           x: parseFloat(c[2]) * Math.cos((parseFloat(c[3]) * Math.PI) / 180),
           y: -parseFloat(c[2]) * Math.sin((parseFloat(c[3]) * Math.PI) / 180),
         })),
       }))
   }
 
-  const getModuleFase = () => {
+  const getModuleFace = () => {
     if (graftState.files === null) {
       return null
     }
     const impedanceData = graftState.files
-      .filter(file => file.selected)
-      .map(file => ({
+      .filter((file) => file.selected)
+      .map((file) => ({
         ...file,
         content: file.content.map((c, i) => ({
           module: {
             x: Math.log10(parseFloat(c[1])),
             y: parseFloat(c[2]),
           },
-          fase: {
+          face: {
             x: Math.log10(parseFloat(c[1])),
             y: -parseFloat(c[3]),
           },
@@ -141,20 +164,20 @@ export const useData = () => {
 
     return impedanceData
   }
-  const getModuleFaseNew = () => {
+  const getModuleFaceNew = () => {
     if (graftState.files === null) {
       return null
     }
     const impedanceData = graftState.files
-      .filter(file => file.selected)
-      .map(file => ({
+      .filter((file) => file.selected)
+      .map((file) => ({
         ...file,
         content: file.content.map((c, i) => ({
           module: {
             x: Math.log10(parseFloat(c[1])),
             y: parseFloat(c[2]),
           },
-          fase: {
+          face: {
             x: Math.log10(parseFloat(c[1])),
             y: -parseFloat(c[3]),
           },
@@ -164,14 +187,21 @@ export const useData = () => {
     return impedanceData
   }
 
-  const calculateColumn = (key: string, value: string[], isImpedance: boolean = true) => {
+  const calculateColumn = (
+    key: string,
+    value: string[],
+    isImpedance: boolean = true
+  ) => {
     const calculate = {
       Time: isImpedance ? parseFloat(value[0]) : value[2],
       Frequency: parseFloat(value[1]),
       Module: parseFloat(value[2]),
-      Fase: parseFloat(value[3]),
-      ZR: parseFloat(value[2]) * Math.cos((parseFloat(value[3]) * Math.PI) / 180),
-      ZI: -parseFloat(value[2]) * Math.sin((parseFloat(value[3]) * Math.PI) / 180),
+      Face: parseFloat(value[3]),
+      ZR:
+        parseFloat(value[2]) * Math.cos((parseFloat(value[3]) * Math.PI) / 180),
+      ZI:
+        -parseFloat(value[2]) *
+        Math.sin((parseFloat(value[3]) * Math.PI) / 180),
       name: '',
       Voltage: value[0],
       Current: value[1],
@@ -183,13 +213,16 @@ export const useData = () => {
   const exportImpedanceDataToExcel = (columns: string[]) => {
     if (columns.length > 0) {
       return graftState.files
-        ?.filter(f => f.selected)
+        ?.filter((f) => f.selected)
         .map((file, i) => {
           return {
             name: file.name,
-            value: file.content.map(c =>
+            value: file.content.map((c) =>
               columns.reduce(
-                (acc, curr) => ({ ...acc, [`${curr} (${i + 1})`]: calculateColumn(curr, c) }),
+                (acc, curr) => ({
+                  ...acc,
+                  [`${curr} (${i + 1})`]: calculateColumn(curr, c),
+                }),
                 {}
               )
             ),
@@ -203,7 +236,7 @@ export const useData = () => {
   const exportVoltammeterDataToExcel = (columns: string[]) => {
     if (columns.length > 0) {
       return graftState.files
-        ?.filter(f => f.selected)
+        ?.filter((f) => f.selected)
         .map((file, i) => {
           return {
             name: file.name,
@@ -213,7 +246,14 @@ export const useData = () => {
                   ...acc,
                   [`${curr} (${i + 1})`]: calculateColumn(
                     curr,
-                    [...c, (((file.voltammeter.totalTime * 1000) / file.pointNumber) * j).toString()],
+                    [
+                      ...c,
+                      (
+                        ((file.voltammeter.totalTime * 1000) /
+                          file.pointNumber) *
+                        j
+                      ).toString(),
+                    ],
                     false
                   ),
                 }),
@@ -239,11 +279,13 @@ export const useData = () => {
       return []
     }
     return graftState.files
-      .map(file => ({ ...file, content: _.dropRight(file.content) }))
-      .filter(file => file.selected)
-      .map(file => ({
+      .map((file) => ({ ...file, content: _.dropRight(file.content) }))
+      .filter((file) => file.selected)
+      .map((file) => ({
         ...file,
-        content: file.content.filter((_, i) => i % stepBetweens === 0).map(c => [c[0], c[1]]),
+        content: file.content
+          .filter((_, i) => i % stepBetweens === 0)
+          .map((c) => [c[0], c[1]]),
       }))
   }
   const getVCDataNew = (stepBetweens: IStepBetweenPoints) => {
@@ -251,11 +293,13 @@ export const useData = () => {
       return []
     }
     return graftState.files
-      .map(file => ({ ...file, content: _.dropRight(file.content) }))
-      .filter(file => file.selected)
-      .map(file => ({
+      .map((file) => ({ ...file, content: _.dropRight(file.content) }))
+      .filter((file) => file.selected)
+      .map((file) => ({
         ...file,
-        content: file.content.filter((_, i) => i % stepBetweens === 0).map(c => [c[0], c[1]]),
+        content: file.content
+          .filter((_, i) => i % stepBetweens === 0)
+          .map((c) => [c[0], c[1]]),
       }))
   }
 
@@ -264,8 +308,8 @@ export const useData = () => {
       return []
     }
     return graftState.files
-      .filter(file => file.selected)
-      .map(file => ({
+      .filter((file) => file.selected)
+      .map((file) => ({
         ...file,
         content: file.content.map((c, i) => ({
           Zi: {
@@ -284,7 +328,9 @@ export const useData = () => {
     if (graftState.files === null || _.isEmpty(cols)) {
       return []
     }
-    const csvData = graftState.files.filter(file => file.selected).find(file => file.type === 'csv')
+    const csvData = graftState.files
+      .filter((file) => file.selected)
+      .find((file) => file.type === 'csv')
 
     // group columns by axis
     const x = cols?.x
@@ -298,9 +344,20 @@ export const useData = () => {
     if (_.isEmpty(x) && _.isEmpty(y)) return null
 
     currentData = {
-      x: x?.map(c => ({ ...c, content: csvData.content.map(d => d[c.index]) })),
-      y: y?.map(c => ({ ...c, content: csvData.content.map(d => d[c.index]) })),
-      y2: y2 && y2?.map(c => ({ ...c, content: csvData.content.map(d => d[c.index]) })),
+      x: x?.map((c) => ({
+        ...c,
+        content: csvData.content.map((d) => d[c.index]),
+      })),
+      y: y?.map((c) => ({
+        ...c,
+        content: csvData.content.map((d) => d[c.index]),
+      })),
+      y2:
+        y2 &&
+        y2?.map((c) => ({
+          ...c,
+          content: csvData.content.map((d) => d[c.index]),
+        })),
     }
 
     return currentData
@@ -312,7 +369,7 @@ export const useData = () => {
     cleanData,
     changeSelectedFile,
     getImpedanceData,
-    getModuleFase,
+    getModuleFace,
     exportImpedanceDataToExcel,
     getVCData,
     getZIZRvsFrequency,
