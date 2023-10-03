@@ -1,10 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./styles/globals.css";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+import App from './App'
+import { GraftProvider, INITIAL_STATE } from './graf/context/GraftProvider'
+
+import './styles/globals.css'
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <GraftProvider initialState={INITIAL_STATE}>
+      <App />
+    </GraftProvider>
   </React.StrictMode>
-);
+)
