@@ -40,6 +40,10 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
+        "webviewInstallMode":{
+          "type": "embedBootstrapper",
+          "silent": true
+        },
         "timestampUrl": "",
         "nsis": {
           "installerIcon": "./icons/icon.ico"
