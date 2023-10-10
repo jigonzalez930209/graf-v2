@@ -1,11 +1,10 @@
 import * as React from 'react'
-import { Backdrop } from '@mui/material'
 import { listen } from '@tauri-apps/api/event'
-import * as _ from 'lodash'
 
 import AppBar from '@/components/app-bar'
 import Drawer from '@/components/drawer'
 import Loader from '@/components/loader'
+import PlotlyChart from '@/components/plot'
 
 import { GrafContext } from '../context/GraftContext'
 import { LoadingsContext } from '../context/Loading'
@@ -13,7 +12,6 @@ import { useData } from '../hooks/useData'
 import { IPlatform } from '../interfaces/interfaces'
 import { readAllFiles, readFilesUsingTauriProcess } from '../utils'
 import DragDrop from './FileList/drag-drop/DragDrop'
-import PlotlyChart from './GrafContainer'
 
 const Index: React.FC = () => {
   const { updateData, data } = useData()
