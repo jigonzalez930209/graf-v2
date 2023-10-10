@@ -48,7 +48,7 @@ const Item = React.forwardRef<HTMLLIElement, ItemProps>((props, ref) => {
           />
           <label
             htmlFor={file.id}
-            className='ml-2 cursor-pointer overflow-hidden truncate hover:text-ellipsis'
+            className='ml-2 cursor-pointer overflow-hidden truncate font-extrabold hover:text-ellipsis'
             style={{ color: `color-mix(in srgb, ${color} 20%, ${file.color})` }}
           >
             {file.name}
