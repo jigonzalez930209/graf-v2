@@ -67,8 +67,8 @@ const FileSort = (props: FileSortProps) => {
   }, [isFilesGrouped])
 
   return (
-    <Container maxHeight={maxHeight} className='relative'>
-      <div className='sticky top-0 z-50 flex w-full justify-center bg-primary-foreground'>
+    <Container maxHeight={maxHeight} className='relative bg-secondary'>
+      <div className='sticky top-0 z-50 flex w-full justify-center bg-secondary'>
         <Button
           variant='ghost'
           size='icon'
