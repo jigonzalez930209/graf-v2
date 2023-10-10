@@ -1,5 +1,4 @@
 import React from 'react'
-import ExportModal from '@/graf/components/ExportModal'
 import { GrafContext } from '@/graf/context/GraftContext'
 import { COLUMNS_IMPEDANCE, COLUMNS_VOLTAMETER } from '@/graf/utils'
 
@@ -15,10 +14,13 @@ import {
 } from '../ui/dialog'
 import { Input } from '../ui/input'
 import { Skeleton } from '../ui/skeleton'
-import { Switch } from '../ui/switch'
 import ExcelFileExport from './excel-file-export'
 
-const ExportDialog = () => {
+type ExportDialogProps = {
+  children?: React.ReactNode
+}
+
+const ExportDialog = ({ children }: ExportDialogProps) => {
   const {
     graftState: { fileType },
   } = React.useContext(GrafContext)
@@ -66,7 +68,7 @@ const ExportDialog = () => {
 
   return (
     <Dialog open={open} onOpenChange={(o) => setOpen(o)}>
-      <DialogTrigger>open</DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogTitle> Select a columns to export </DialogTitle>
         <div className='flex flex-row'>

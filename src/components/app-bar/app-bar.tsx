@@ -50,7 +50,11 @@ const Bar: React.FC = ({}) => {
         </PopoverContent>
       </CustomPopover>
       <ProjectHandler />
-      <ExportModal />
+      <ExportModal>
+        <Button className='uppercase' variant='ghost'>
+          Export
+        </Button>
+      </ExportModal>
     </div>
   )
 }
