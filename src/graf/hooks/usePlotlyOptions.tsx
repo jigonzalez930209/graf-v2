@@ -1,6 +1,9 @@
 import * as React from 'react'
 import _ from 'lodash'
+import { useTheme } from 'next-themes'
 import { useWindowSize } from 'usehooks-ts'
+
+import { defaultTheme } from '@/lib/utils'
 
 import { GrafContext } from '../context/GraftContext'
 import { COLORS } from '../utils/utils'
@@ -8,11 +11,11 @@ import { useData } from './useData'
 
 const StaticValues = ({ drawerOpen = true, width = 720, height = 540 }) => ({
   autosize: true,
-  width: drawerOpen ? width * 0.72 : width * 0.876,
-  height: drawerOpen ? height * 0.8 : height * 0.8,
-  fillcolor: '#d3d3d3',
+  width: drawerOpen ? width -300 : width * 0.98,
+  height: drawerOpen ? height -95 : height -95,
   legend: {
-    x: 1.1,
+    x: -5,
+    y: 1,
     traceorder: 'normal',
     font: {
       family: 'sans-serif',
@@ -33,13 +36,6 @@ const StaticValues = ({ drawerOpen = true, width = 720, height = 540 }) => ({
     },
     xref: 'paper',
     x: 0.005,
-  },
-  transition: {
-    duration: 500,
-    easing: 'cubic-in-out',
-  },
-  frame: {
-    duration: 500,
   },
 })
 
@@ -65,6 +61,12 @@ const usePlotlyOptions = () => {
   } = React.useContext(GrafContext)
   const { height, width } = useWindowSize()
 
+  const theme = useTheme()
+  const t = defaultTheme(theme)
+
+  console.log(width, height);
+  
+
   const {
     getImpedanceData,
     getModuleFace,
@@ -81,6 +83,8 @@ const usePlotlyOptions = () => {
   })
   const [data, setData] = React.useState([])
 
+  const fontColor = t === 'dark' ? '#e6e6e6' : '#262626'
+
   React.useEffect(() => {
     if (currentData?.length > 0) {
       if (fileType === 'teq4Z') {
@@ -92,9 +96,9 @@ const usePlotlyOptions = () => {
                   x: d.content.map((i) => i.face.x),
                   y: d.content.map((i) => i.face.y),
                   type: 'scatter',
-                  hovertemplate: hovertemplate(`face_${d.name}`),
+                  hovertemplate: hovertemplate(`fase_${d.name}`),
                   mode: graftType === 'line' ? 'lines+markers' : 'markers',
-                  name: `face_${d.name}`,
+                  name: `fase_${d.name}`,
                   marker: {
                     color: d.color,
                     size:
@@ -129,30 +133,17 @@ const usePlotlyOptions = () => {
           )
 
           setLayout({
-            autosize: false,
-            width: drawerOpen ? width * 0.8 : width * 0.94,
-            height: drawerOpen ? height * 0.89 : height * 0.89,
+            ...StaticValues({
+              drawerOpen: drawerOpen,
+              width: width,
+              height: height,
+            }),
             hovermode: 'closest',
-            legend: {
-              x: 1.1,
-              traceorder: 'normal',
-              font: {
-                family: 'sans-serif',
-                size: 12,
-                color: '#000',
-              },
-            },
-            margin: {
-              l: drawerOpen ? 50 : 0,
-              r: 50,
-              b: 100,
-              t: 50,
-              pad: 4,
-            },
             title: {
               text: impedanceType,
               font: {
                 size: 18,
+                color: fontColor,
               },
               xref: 'paper',
               x: 0.005,
@@ -162,26 +153,26 @@ const usePlotlyOptions = () => {
                 text: 'log10(Frequency(Hz))',
                 font: {
                   size: 18,
-                  color: '#7f7f7f',
+                  color: fontColor,
                 },
               },
             },
             yaxis: {
               title: {
-                text: 'Face',
+                text: 'Module',
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
             yaxis2: {
-              title: 'Module',
+              title: 'Fase',
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#fff', size: 18 },
-              tickfont: { color: '#fff' },
+              titlefont: { color: fontColor, size: 18 },
+              tickfont: { color: fontColor },
             },
           })
         } else if (impedanceType === 'Nyquist') {
@@ -204,22 +195,17 @@ const usePlotlyOptions = () => {
             }))
           )
           setLayout({
-            autosize: false,
             hovermode: 'closest',
-            width: drawerOpen ? width * 0.8 : width * 0.95,
-            height: drawerOpen ? height * 0.89 : height * 0.89,
-            margin: {
-              l: 50,
-              r: 50,
-              b: 100,
-              t: 50,
-              pad: 4,
-            },
+            ...StaticValues({
+              drawerOpen: drawerOpen,
+              width: width,
+              height: height,
+            }),
             title: {
               text: impedanceType,
               font: {
-                // family: 'Courier New, monospace',
                 size: 18,
+                color: fontColor,
               },
               xref: 'paper',
               x: 0.05,
@@ -230,7 +216,7 @@ const usePlotlyOptions = () => {
                 font: {
                   // family: 'Courier New, monospace',
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -240,7 +226,7 @@ const usePlotlyOptions = () => {
                 font: {
                   // family: 'Courier New, monospace',
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -283,26 +269,12 @@ const usePlotlyOptions = () => {
           )
 
           setLayout({
-            autosize: false,
-            width: drawerOpen ? width * 0.8 : width * 0.95,
-            height: drawerOpen ? height * 0.89 : height * 0.89,
+             ...StaticValues({
+              drawerOpen: drawerOpen,
+              width: width,
+              height: height,
+            }),
             hovermode: 'closest',
-            legend: {
-              x: 1.1,
-              traceorder: 'normal',
-              font: {
-                family: 'sans-serif',
-                size: 12,
-                color: '#000',
-              },
-            },
-            margin: {
-              l: 50,
-              r: 50,
-              b: 100,
-              t: 50,
-              pad: 4,
-            },
             title: {
               text: impedanceType,
               font: {
@@ -316,7 +288,7 @@ const usePlotlyOptions = () => {
                 text: 'log10(Frequency(Hz))',
                 font: {
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -326,7 +298,7 @@ const usePlotlyOptions = () => {
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -334,8 +306,8 @@ const usePlotlyOptions = () => {
               title: 'ZI',
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#fff', size: 18 },
-              tickfont: { color: '#fff' },
+              titlefont: { color: fontColor, size: 18 },
+              tickfont: { color: fontColor },
             },
           })
         }
@@ -358,21 +330,16 @@ const usePlotlyOptions = () => {
         )
 
         setLayout({
-          autosize: false,
-          width: drawerOpen ? width * 0.8 : width * 0.95,
-          height: drawerOpen ? height * 0.89 : height * 0.89,
-          hovermode: 'closest',
-          margin: {
-            l: 50,
-            r: 50,
-            b: 100,
-            t: 50,
-            pad: 4,
-          },
+          ...StaticValues({
+              drawerOpen: drawerOpen,
+              width: width,
+              height: height,
+            }),
           title: {
             text: 'VC',
             font: {
               size: 18,
+              color: fontColor,
             },
             xref: 'paper',
             x: 0.05,
@@ -382,7 +349,7 @@ const usePlotlyOptions = () => {
               text: 'Voltage (mV)',
               font: {
                 size: 18,
-                color: '#fff',
+                color: fontColor,
               },
             },
           },
@@ -391,7 +358,7 @@ const usePlotlyOptions = () => {
               text: 'Current (mA)',
               font: {
                 size: 18,
-                color: '#fff',
+                color: fontColor,
               },
             },
           },
@@ -465,7 +432,7 @@ const usePlotlyOptions = () => {
                 text: csvData.x[0].name,
                 font: {
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -475,7 +442,7 @@ const usePlotlyOptions = () => {
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -483,8 +450,8 @@ const usePlotlyOptions = () => {
               title: csvData.y2[0]?.name,
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#fff', size: 18 },
-              tickfont: { color: '#fff' },
+              titlefont: { color: fontColor, size: 18 },
+              tickfont: { color: fontColor },
             },
           })
 
@@ -550,7 +517,7 @@ const usePlotlyOptions = () => {
                 text: csvData.x[0].name,
                 font: {
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -560,7 +527,7 @@ const usePlotlyOptions = () => {
                 x: 0,
                 font: {
                   size: 18,
-                  color: '#fff',
+                  color: fontColor,
                 },
               },
             },
@@ -568,8 +535,8 @@ const usePlotlyOptions = () => {
               title: csvData.y2[0]?.name,
               overlaying: 'y',
               side: 'right',
-              titlefont: { color: '#fff', size: 18 },
-              tickfont: { color: '#fff' },
+              titlefont: { color: fontColor, size: 18 },
+              tickfont: { color: fontColor },
             },
           })
         } else {
@@ -604,10 +571,11 @@ const usePlotlyOptions = () => {
     drawerOpen,
     csvFileColum,
     lineOrPointWidth,
+    fontColor,
   ])
 
   return {
-    layout: { plot_bgcolor: '#d3d3d3', paper_bgcolor: '#FFF3', ...layout },
+    layout,
     config,
     data,
   }
