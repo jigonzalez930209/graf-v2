@@ -1,11 +1,7 @@
 import * as React from 'react'
 import Backdrop from '@mui/material/Backdrop'
 import ReactMarkdown from 'react-markdown'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeKatex from 'rehype-katex'
-import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
-import remarkSlug from 'remark-slug'
 import remarkToc from 'remark-toc'
 
 import Loader from '@/components/loader'
@@ -39,7 +35,7 @@ const MdText = ({ style, mdPath }) => {
       ) : (
         <ReactMarkdown
           className='markdown-body'
-          remarkPlugins={[remarkGfm, remarkSlug, remarkToc]}
+          remarkPlugins={[remarkGfm, remarkToc]}
           components={{}}
         >
           {text}
