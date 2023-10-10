@@ -25,9 +25,9 @@ export function Menu() {
   const [name, setName] = React.useState('')
 
   const closeWindow = React.useCallback(async () => {
-    const { appWindow } = await import('@tauri-apps/plugin-window')
+    const {getCurrent  } = await import('@tauri-apps/plugin-window')
 
-    appWindow.close()
+    getCurrent().close()
   }, [])
 
   React.useEffect(() => {
@@ -40,8 +40,12 @@ export function Menu() {
   }, [window.__TAURI_METADATA__])
 
   return (
-    <WindowTitlebar>
-      <Menubar className='z-50 w-full rounded-none border-b border-none pl-2 lg:pl-3'>
+    <WindowTitlebar className='justify-start' windowControlsProps={
+      {
+        "data-tauri-drag-region": true,
+      }
+    } >
+      <Menubar className='z-50 w-min rounded-none border-b border-none pl-2 lg:pl-3'>
         <MenubarMenu>
           <CustomTooltip
             title='Graf is a tool for creating and managing graphs.'
@@ -85,7 +89,6 @@ export function Menu() {
         <ProjectMenu />
 
         <MenuModeToggle />
-        <div className='w-full text-center'>{name}</div>
       </Menubar>
     </WindowTitlebar>
   )
