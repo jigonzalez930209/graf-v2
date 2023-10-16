@@ -22,12 +22,11 @@ const Bar: React.FC = ({}) => {
     graftState: { drawerOpen, fileType },
     setDrawerOpen,
   } = React.useContext(GrafContext)
-
   const handleOpenFiles = () => {}
 
   return (
     <div className='mt-2 flex gap-3 pl-4 '>
-      <CustomPopover>
+      {/* <CustomPopover>
         <PopoverTrigger>
           <Button className='uppercase' variant='ghost'>
             Project
@@ -37,7 +36,7 @@ const Bar: React.FC = ({}) => {
           <Project />
           <Popover.Arrow className='fill-primary' />
         </PopoverContent>
-      </CustomPopover>
+      </CustomPopover> */}
       <CustomPopover>
         <PopoverTrigger>
           <Button className='uppercase' variant='ghost'>
@@ -50,11 +49,13 @@ const Bar: React.FC = ({}) => {
         </PopoverContent>
       </CustomPopover>
       <ProjectHandler />
-      <ExportModal>
-        <Button className='uppercase' variant='ghost'>
-          Export
-        </Button>
-      </ExportModal>
+      {!['csv', null].includes(fileType) && (
+        <ExportModal>
+          <Button className='uppercase' variant='ghost'>
+            Export
+          </Button>
+        </ExportModal>
+      )}
     </div>
   )
 }
