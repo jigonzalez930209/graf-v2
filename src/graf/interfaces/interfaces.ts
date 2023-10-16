@@ -30,7 +30,7 @@ export type IGrafType = 'line' | 'scatter'
 
 export type IGraftImpedanceType = 'Bode' | 'Nyquist' | 'ZiZrVsFreq'
 
-export type IFileType = 'teq4Z' | 'teq4' | 'csv'
+export type IFileType = 'teq4Z' | 'teq4' | 'csv' | null
 
 export type IGraftData =
   | 'IMPEDANCE_MODULE_FASE'
