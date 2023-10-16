@@ -11,8 +11,8 @@ import { useData } from './useData'
 
 const StaticValues = ({ drawerOpen = true, width = 720, height = 540 }) => ({
   autosize: true,
-  width: drawerOpen ? width -300 : width * 0.98,
-  height: drawerOpen ? height -95 : height -95,
+  width: drawerOpen ? width - 300 : width * 0.98,
+  height: drawerOpen ? height - 95 : height - 95,
   legend: {
     x: -5,
     y: 1,
@@ -64,8 +64,7 @@ const usePlotlyOptions = () => {
   const theme = useTheme()
   const t = defaultTheme(theme)
 
-  console.log(width, height);
-  
+  console.log(width, height)
 
   const {
     getImpedanceData,
@@ -269,7 +268,7 @@ const usePlotlyOptions = () => {
           )
 
           setLayout({
-             ...StaticValues({
+            ...StaticValues({
               drawerOpen: drawerOpen,
               width: width,
               height: height,
@@ -331,10 +330,10 @@ const usePlotlyOptions = () => {
 
         setLayout({
           ...StaticValues({
-              drawerOpen: drawerOpen,
-              width: width,
-              height: height,
-            }),
+            drawerOpen: drawerOpen,
+            width: width,
+            height: height,
+          }),
           title: {
             text: 'VC',
             font: {
@@ -387,11 +386,11 @@ const usePlotlyOptions = () => {
                   legendgroup: `${d.name}`,
                   marker: {
                     color: COLORS[i],
-                    size: 3,
+                    size: lineOrPointWidth,
                   },
                   line: {
                     color: COLORS[i],
-                    width: 1,
+                    width: lineOrPointWidth,
                   },
                   color: COLORS[i],
                 })
@@ -407,11 +406,11 @@ const usePlotlyOptions = () => {
                     yaxis: 'y2',
                     marker: {
                       color: COLORS[i],
-                      size: 3,
+                      size: lineOrPointWidth,
                     },
                     line: {
                       color: COLORS[i],
-                      width: 1,
+                      width: lineOrPointWidth,
                     },
                     color: COLORS[i],
                   })
@@ -424,8 +423,8 @@ const usePlotlyOptions = () => {
           setLayout({
             ...StaticValues({
               drawerOpen: drawerOpen,
-              width: width,
-              height: height,
+              width: width - 150,
+              height: height - 150,
             }),
             xaxis: {
               title: {
@@ -508,8 +507,8 @@ const usePlotlyOptions = () => {
           setLayout({
             ...StaticValues({
               drawerOpen: drawerOpen,
-              width: width,
-              height: height,
+              width: width - 150,
+              height: height - 120,
             }),
             hovermode: 'closest',
             xaxis: {
