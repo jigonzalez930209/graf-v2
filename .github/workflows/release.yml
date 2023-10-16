@@ -88,8 +88,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          repo: ${{ github.repository }}
-          args: build --target i686-pc-windows-msvc
           releaseId: ${{ needs.create-release.outputs.release_id }}
 
   publish-release:
