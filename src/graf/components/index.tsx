@@ -2,6 +2,7 @@ import * as React from 'react'
 import { listen } from '@tauri-apps/api/event'
 
 import AppBar from '@/components/app-bar'
+import DragDrop from '@/components/drag-drop/drag-drop'
 import Drawer from '@/components/drawer'
 import Loader from '@/components/loader'
 import PlotlyChart from '@/components/plot'
@@ -11,7 +12,6 @@ import { LoadingsContext } from '../context/Loading'
 import { useData } from '../hooks/useData'
 import { IPlatform } from '../interfaces/interfaces'
 import { readAllFiles, readFilesUsingTauriProcess } from '../utils'
-import DragDrop from './FileList/drag-drop/DragDrop'
 
 const Index: React.FC = () => {
   const { updateData, data } = useData()
@@ -54,7 +54,7 @@ const Index: React.FC = () => {
     <>
       <AppBar />
       {loading && <Loader />}
-      <div className='flex h-full w-full'>
+      <div className='flex max-h-full max-w-full'>
         <Drawer variant='left' />
         {graftState?.fileType === 'csv' ? (
           <DragDrop PlotlyChart={<PlotlyChart />} />
