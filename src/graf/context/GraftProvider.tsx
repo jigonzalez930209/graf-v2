@@ -21,7 +21,7 @@ export const INITIAL_STATE: IGraftState = {
     type: null,
   },
   state: {},
-  fileType: 'teq4',
+  fileType: null,
   loading: false,
   graftType: 'scatter',
   impedanceType: 'Nyquist',
