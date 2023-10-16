@@ -32,11 +32,12 @@ export type CustomTooltipProps = {
   Icon?: React.ReactNode
   content?: string
   children?: JSX.Element
+  className?: string
   onClick?: () => void
 }
 
 const CustomTooltip = (props: CustomTooltipProps) => {
-  const { title, Icon, content, children, onClick } = props
+  const { title, Icon, content, children, onClick, className } = props
   return (
     <TooltipPrimitive.Provider>
       <TooltipPrimitive.Root>
@@ -45,7 +46,7 @@ const CustomTooltip = (props: CustomTooltipProps) => {
             variant='ghost'
             size='icon'
             onClick={onClick}
-            className='rounded-full'
+            className={cn('rounded-full', className)}
           >
             {!!Icon &&
               React.isValidElement(Icon) &&
