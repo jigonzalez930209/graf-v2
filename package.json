@@ -9,7 +9,8 @@
     "format": "npx prettier --write . --ignore-path .gitignore ",
     "taze": "taze major -I",
     "taze:minor": "taze minor -w",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "tauri-build": "tauri build && tauri build --target i686-pc-windows-msvc"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.0.8",
