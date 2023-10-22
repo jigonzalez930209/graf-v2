@@ -8,11 +8,11 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '../ui/select'
 import { Slider } from '../ui/slider'
+import ColorSelectPalette from './color-select'
 
 export const Settings = () => {
   const {
@@ -30,8 +30,8 @@ export const Settings = () => {
   } = React.useContext(GrafContext)
 
   return (
-    <ul className='one m-0 grid list-none gap-y-[10px] p-[22px] sm:w-[400px]'>
-      <li className='grid grid-cols-5 items-center gap-3'>
+    <ul className='one m-0 grid w-[600px] list-none gap-y-[20px] '>
+      <li className='grid grid-cols-5 items-center gap-3 px-[22px]'>
         <Label className='col-span-2 align-top'>Line type</Label>
         <Select
           onValueChange={(t) => setGraftType(t as IGrafType)}
@@ -47,7 +47,7 @@ export const Settings = () => {
           </SelectContent>
         </Select>
       </li>
-      <li className='grid grid-cols-5  gap-3'>
+      <li className='grid grid-cols-5  gap-3 px-[22px]'>
         <Label className='col-span-2 align-top'>Width of line or points</Label>
         <Slider
           className='col-span-3 w-full'
@@ -60,7 +60,7 @@ export const Settings = () => {
         />
       </li>
       {fileType === 'teq4' && (
-        <li className='grid grid-cols-5  gap-3'>
+        <li className='grid grid-cols-5  gap-3 px-[22px]'>
           <Label className='col-span-2 align-top'>Steps between points</Label>
           <Slider
             className='col-span-3 w-full'
@@ -74,7 +74,7 @@ export const Settings = () => {
         </li>
       )}
       {fileType === 'teq4Z' && (
-        <li className='grid grid-cols-5 items-center gap-3'>
+        <li className='grid grid-cols-5 items-center gap-3 px-[22px]'>
           <Label className='col-span-2 align-top'>Impedance type</Label>
           <Select
             onValueChange={(i) => setImpedanceType(i as IGraftImpedanceType)}
@@ -98,6 +98,12 @@ export const Settings = () => {
           </Select>
         </li>
       )}
+      <li className='grid grid-cols-5  gap-3  px-[22px]'>
+        <div className='col-span-2 self-center align-middle'>Palette</div>
+        <div className='col-span-3'>
+          <ColorSelectPalette />
+        </div>
+      </li>
     </ul>
   )
 }
