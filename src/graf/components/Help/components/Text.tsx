@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Backdrop from '@mui/material/Backdrop'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkToc from 'remark-toc'
@@ -25,13 +24,13 @@ const MdText = ({ style, mdPath }) => {
   return (
     <>
       {loading ? (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.modal + 1 }}
-          open={loading}
+        <div
+          style={{ color: '#fff', zIndex: 500 }}
+          // open={loading}
           onClick={() => {}}
         >
           <Loader />
-        </Backdrop>
+        </div>
       ) : (
         <ReactMarkdown
           className='markdown-body'
