@@ -9,20 +9,14 @@ import {
 } from '@/components/ui/popover'
 
 import { GrafContext } from '../../graf/context/GraftContext'
-import { useData } from '../../graf/hooks/useData'
 import ExportModal from '../export-dialog'
-import { Project } from './project'
 import ProjectHandler from './project-handler'
 import { Settings } from './settings'
 
 const Bar: React.FC = ({}) => {
-  const { cleanData } = useData()
-
   const {
-    graftState: { drawerOpen, fileType },
-    setDrawerOpen,
+    graftState: { fileType },
   } = React.useContext(GrafContext)
-  const handleOpenFiles = () => {}
 
   return (
     <div className='mt-2 flex gap-3 pl-4 '>

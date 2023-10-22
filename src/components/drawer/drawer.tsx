@@ -6,23 +6,12 @@ import { cn } from '@/lib/utils'
 
 import FileSort from '../file-sort'
 import { Button } from '../ui/button'
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '../ui/sheet'
 
 export type DrawerProps = {
   variant: 'left' | 'right' | 'top' | 'bottom'
 }
 
 const Drawer = ({ ...props }: DrawerProps) => {
-  const { variant } = props
   const {
     graftState: { drawerOpen },
     setDrawerOpen,

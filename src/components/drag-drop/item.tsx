@@ -1,6 +1,4 @@
-import React from 'react'
 import { COLORS } from '@/graf/utils/utils'
-import { Box } from '@mui/material'
 
 import { droppableItem } from './drag-drop'
 
