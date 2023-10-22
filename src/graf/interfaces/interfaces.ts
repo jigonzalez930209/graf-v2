@@ -22,6 +22,8 @@ export interface IGraftState {
   files: ProcessFile[]
   platform: IPlatform
   isFilesGrouped: boolean
+  colorScheme: IColorScheme
+  selectedFilesCount: number
 }
 
 export type IPlatform = 'web' | 'desktop' | null
@@ -108,3 +110,5 @@ export type columns = {
   index: number
   color?: string
 }[]
+
+export type IColorScheme = string

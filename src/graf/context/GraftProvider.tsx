@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import {
   csvFileColum,
+  IColorScheme,
   IFileType,
   IGraftImpedanceType,
   IGraftState,
@@ -32,6 +33,8 @@ export const INITIAL_STATE: IGraftState = {
   files: [],
   platform: null,
   isFilesGrouped: false,
+  colorScheme: '1',
+  selectedFilesCount: 0,
 }
 
 interface props {
@@ -80,6 +83,12 @@ export const GraftProvider = ({ children, initialState }: props) => {
   const setIsFilesGrouped = (isFileGrouped: boolean) =>
     dispatch({ type: 'setIsFilesGrouped', payload: isFileGrouped })
 
+  const setColorScheme = (colorScheme: IColorScheme) =>
+    dispatch({ type: 'setColorScheme', payload: colorScheme })
+
+  const setSelectedFilesCount = (count: number) =>
+    dispatch({ type: 'setSelectedFilesCount', payload: count })
+
   React.useEffect(() => {
     setGraftState(initialState)
   }, [initialState])
@@ -102,6 +111,8 @@ export const GraftProvider = ({ children, initialState }: props) => {
         setGraftState,
         setPlatform,
         setLineOrPointWidth,
+        setColorScheme,
+        setSelectedFilesCount,
       }}
     >
       {children}
