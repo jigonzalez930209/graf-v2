@@ -17,10 +17,12 @@ export const useData = () => {
     setFiles,
     updateFile,
     updateCSVfileColumn,
+    setSelectedFilesCount,
   } = React.useContext(GrafContext)
 
   const setData = (payload: ProcessFile[]) => {
     setColumns([])
+    setSelectedFilesCount(0)
     if (payload?.length > 0) {
       let columns: csvFileColum[] = []
       payload.forEach((file) => {
@@ -89,9 +91,18 @@ export const useData = () => {
 
   const changeSelectedFile = (id: string) => {
     const file = graftState.files.find((file) => file.id === id)
+    if (!Boolean(file)) throw new Error('File not found')
+
+    if (graftState.selectedFilesCount === 10 && file.selected === false)
+      throw new Error('You can select only 10 files')
+
+    if (file.selected === true)
+      setSelectedFilesCount(graftState.selectedFilesCount - 1)
+    else setSelectedFilesCount(graftState.selectedFilesCount + 1)
 
     if (file.type === 'csv') {
       setSelectedFile('csv')
+      setSelectedFilesCount(1)
       setFiles(
         graftState.files.map((file) => ({ ...file, selected: file.id === id }))
       )
@@ -130,17 +141,6 @@ export const useData = () => {
         ]),
       }))
   }
-  const getImpedanceDataNew = () => {
-    return graftState.files
-      .filter((file) => file.selected)
-      .map((file) => ({
-        ...file,
-        content: file.content.map((c) => ({
-          x: parseFloat(c[2]) * Math.cos((parseFloat(c[3]) * Math.PI) / 180),
-          y: -parseFloat(c[2]) * Math.sin((parseFloat(c[3]) * Math.PI) / 180),
-        })),
-      }))
-  }
 
   const getModuleFace = () => {
     if (graftState.files === null) {
@@ -157,29 +157,7 @@ export const useData = () => {
           },
           face: {
             x: Math.log10(parseFloat(c[1])),
-            y: -parseFloat(c[3]),
-          },
-        })),
-      }))
-
-    return impedanceData
-  }
-  const getModuleFaceNew = () => {
-    if (graftState.files === null) {
-      return null
-    }
-    const impedanceData = graftState.files
-      .filter((file) => file.selected)
-      .map((file) => ({
-        ...file,
-        content: file.content.map((c, i) => ({
-          module: {
-            x: Math.log10(parseFloat(c[1])),
-            y: parseFloat(c[2]),
-          },
-          face: {
-            x: Math.log10(parseFloat(c[1])),
-            y: -parseFloat(c[3]),
+            y: parseFloat(c[3]),
           },
         })),
       }))
@@ -275,20 +253,6 @@ export const useData = () => {
   }
 
   const getVCData = (stepBetweens: IStepBetweenPoints) => {
-    if (graftState.files === null) {
-      return []
-    }
-    return graftState.files
-      .map((file) => ({ ...file, content: _.dropRight(file.content) }))
-      .filter((file) => file.selected)
-      .map((file) => ({
-        ...file,
-        content: file.content
-          .filter((_, i) => i % stepBetweens === 0)
-          .map((c) => [c[0], c[1]]),
-      }))
-  }
-  const getVCDataNew = (stepBetweens: IStepBetweenPoints) => {
     if (graftState.files === null) {
       return []
     }
