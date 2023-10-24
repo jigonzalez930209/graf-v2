@@ -54,7 +54,7 @@ export function AboutDialog() {
         </DialogTitle>
 
         <DialogDescription className=' text-foreground'>
-          App description.
+          A plot viewer for TEQ4, TEQ4Z and csv files
         </DialogDescription>
 
         <span className='text-xs text-gray-400'>{updateText}</span>

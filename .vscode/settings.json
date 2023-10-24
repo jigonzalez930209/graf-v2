@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "autosize",
+    "Bootstrapper",
     "bordercolor",
     "borderwidth",
     "cicles",
@@ -9,6 +10,7 @@
     "Downloder",
     "drawcircle",
     "fase",
+    "fullscreen",
     "gridcolor",
     "hovermode",
     "hovertemplate",
@@ -33,6 +35,7 @@
     "voltametry",
     "webp",
     "xaxis",
+    "xlsb",
     "yaxis"
   ]
 }
