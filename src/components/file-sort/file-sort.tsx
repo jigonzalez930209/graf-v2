@@ -3,6 +3,7 @@ import { GrafContext } from '@/graf/context/GraftContext'
 import { useData } from '@/graf/hooks/useData'
 import { ProcessFile } from '@/graf/interfaces/interfaces'
 import { GroupIcon, UngroupIcon } from 'lucide-react'
+import { useSnackbar } from 'notistack'
 
 import {
   Accordion,
@@ -12,10 +13,10 @@ import {
 } from '@/components/ui/accordion'
 
 import { Button } from '../ui/button'
-import { Checkbox } from '../ui/checkbox'
 import Container from './container'
 import Item from './item'
 import List from './list'
+import RemoveSelection from './remove-selection'
 
 type GroupedFiles = {
   teq4: ProcessFile[]
@@ -36,6 +37,7 @@ const FileSort = (props: FileSortProps) => {
   const { maxHeight } = props
 
   const { changeSelectedFile } = useData()
+  const { enqueueSnackbar } = useSnackbar()
 
   const [groupedFiles, setGroupedFiles] = React.useState<GroupedFiles>({
     teq4: [],
@@ -62,17 +64,31 @@ const FileSort = (props: FileSortProps) => {
     }
   }, [groupedFiles])
 
-  React.useEffect(() => {
+  const handleChangeGroupedFiles = React.useCallback(() => {
+    setIsFilesGrouped(!isFilesGrouped)
     groupFiles()
   }, [isFilesGrouped])
 
+  const handleFileSelectedChange = React.useCallback(
+    (id: string) => {
+      try {
+        changeSelectedFile(id)
+      } catch (e) {
+        enqueueSnackbar(`You can't select more than 10 files`, {
+          variant: 'warning',
+        })
+      }
+    },
+    [files]
+  )
+
   return (
     <Container maxHeight={maxHeight} className='relative bg-secondary'>
-      <div className='sticky top-0 z-50 flex w-full justify-center bg-secondary'>
+      <div className='sticky top-0 z-50 flex w-full justify-center gap-4 bg-secondary'>
         <Button
           variant='ghost'
           size='icon'
-          onClick={() => setIsFilesGrouped(!isFilesGrouped)}
+          onClick={() => handleChangeGroupedFiles()}
         >
           {isFilesGrouped ? (
             <UngroupIcon className='h-[15px] w-[15px]' />
@@ -80,6 +96,7 @@ const FileSort = (props: FileSortProps) => {
             <GroupIcon className='h-[15px] w-[15px]' />
           )}
         </Button>
+        <RemoveSelection />
       </div>
       {isFilesGrouped ? (
         <Accordion type='single' collapsible className='w-full'>
@@ -91,7 +108,7 @@ const FileSort = (props: FileSortProps) => {
                   <Item
                     key={file.id}
                     file={file}
-                    setFile={changeSelectedFile}
+                    setFile={handleFileSelectedChange}
                   />
                 ))}
               </List>
@@ -105,7 +122,7 @@ const FileSort = (props: FileSortProps) => {
                   <Item
                     key={file.id}
                     file={file}
-                    setFile={changeSelectedFile}
+                    setFile={handleFileSelectedChange}
                   />
                 ))}
               </ul>
@@ -119,7 +136,7 @@ const FileSort = (props: FileSortProps) => {
                   <Item
                     key={file.id}
                     file={file}
-                    setFile={changeSelectedFile}
+                    setFile={handleFileSelectedChange}
                   />
                 ))}
               </ul>
@@ -129,7 +146,11 @@ const FileSort = (props: FileSortProps) => {
       ) : (
         <List>
           {files.map((file) => (
-            <Item key={file.id} file={file} setFile={changeSelectedFile} />
+            <Item
+              key={file.id}
+              file={file}
+              setFile={handleFileSelectedChange}
+            />
           ))}
         </List>
       )}

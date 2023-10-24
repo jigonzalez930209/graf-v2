@@ -42,7 +42,7 @@ const Item = React.forwardRef<HTMLLIElement, ItemProps>((props, ref) => {
           {...rest}
         >
           <Checkbox
-            checked={files.find((d) => d.id === file.id)?.selected}
+            checked={Boolean(files.find((d) => d.id === file.id)?.selected)}
             onCheckedChange={() => setFile(file.id)}
             id={file.id.toString()}
           />
@@ -66,7 +66,13 @@ const Item = React.forwardRef<HTMLLIElement, ItemProps>((props, ref) => {
           <div className='scale-[90%]'>
             {file.type === 'teq4' && (
               <>
-                <div className=' text-lg '>Cyclic voltametry</div>
+                {file.selected && (
+                  <div className='flex w-full  items-center justify-center'>
+                    <div className='w-[25px] rounded-full border text-center'>
+                      {file.selected}
+                    </div>
+                  </div>
+                )}
                 <p
                   className='my-1'
                   style={{
@@ -87,6 +93,13 @@ const Item = React.forwardRef<HTMLLIElement, ItemProps>((props, ref) => {
             {file.type === 'teq4Z' && (
               <>
                 <div className='font-medium'>Impedance</div>
+                {file.selected && (
+                  <div className='flex w-full  items-center justify-center'>
+                    <div className='w-[25px] rounded-full border text-center'>
+                      {file.selected}
+                    </div>
+                  </div>
+                )}
                 <p
                   className=''
                   style={{

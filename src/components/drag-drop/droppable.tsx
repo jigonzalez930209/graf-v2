@@ -2,56 +2,11 @@ import * as React from 'react'
 import { GrafContext } from '@/graf/context/GraftContext'
 import { useDroppable } from '@dnd-kit/core'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
-import { colors, Divider, Grid } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-import { a } from '@tauri-apps/api/event-41a9edf5'
-import { useScreen } from 'usehooks-ts'
 
 import { cn } from '@/lib/utils'
 
 import { droppableItem } from './drag-drop'
 import SortableItem from './sortable-item'
-
-const useStyles = makeStyles({
-  sortableContextContainer: {
-    '&::-webkit-scrollbar': {
-      width: 2,
-      height: 3,
-    },
-    '&::-webkit-scrollbar-track': {
-      backgroundColor: 'silverlight',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'silver',
-      borderRadius: 2,
-    },
-    minWidth: '100%',
-    padding: '0px 0px 2px 0px',
-    gap: '3px',
-    overflow: 'auto',
-  },
-  arrow: {
-    width: 0,
-    height: 0,
-    borderBottom: '5px solid transparent',
-    borderTop: '5px solid transparent',
-    borderRight: '5px solid red',
-  },
-  dropHere: {
-    width: '80%',
-    textAlign: 'center',
-    height: 10,
-    margin: 0,
-    padding: 0,
-    color: colors.grey[700],
-  },
-  root: {
-    display: 'flex',
-    justifyContent: 'start',
-    alignItems: 'center',
-    padding: 0,
-  },
-})
 
 type DroppableProps = {
   id: string
@@ -69,8 +24,6 @@ const Droppable = ({
   isNotIndex = false,
 }: DroppableProps) => {
   const { setNodeRef, over, active } = useDroppable({ id })
-  const { width } = useScreen()
-  const classes = useStyles()
   const {
     graftState: { drawerOpen },
   } = React.useContext(GrafContext)
@@ -79,27 +32,20 @@ const Droppable = ({
     over?.id === id || over?.data?.current?.sortable?.containerId === id
 
   const title = (
-    <>
-      <h6
-        style={{
-          marginLeft: isHorizontal && 8,
-          marginTop: 0,
-          marginBottom: 0,
-          padding: 0,
-          width: isHorizontal ? 20 : 120,
-          display: 'block',
-        }}
-      >
-        {name}
-      </h6>
-      <Divider
-        flexItem
-        orientation={isHorizontal ? 'vertical' : 'horizontal'}
-      />
-    </>
+    <h6
+      style={{
+        marginLeft: isHorizontal && 8,
+        marginTop: 0,
+        marginBottom: 0,
+        padding: 0,
+        width: isHorizontal ? 20 : 120,
+        display: 'block',
+        borderBottom: '1px solid',
+      }}
+    >
+      {name}
+    </h6>
   )
-
-  console.log(isHorizontal, title, drawerOpen, active, isHovering)
 
   return (
     <div
@@ -137,14 +83,13 @@ const Droppable = ({
                   {over?.data?.current?.sortable?.index === i &&
                     over?.data?.current?.sortable?.containerId === id && (
                       <div
-                        className={classes.arrow}
                         style={{
                           display: isHorizontal ? 'block' : 'none',
-                          width: 0,
-                          height: 0,
                           borderBottom: '5px solid transparent',
                           borderTop: '5px solid transparent',
                           borderRight: '5px solid red',
+                          width: 0,
+                          height: 0,
                         }}
                       />
                     )}
@@ -158,7 +103,6 @@ const Droppable = ({
                     over?.data?.current === undefined &&
                     over?.id === id && (
                       <div
-                        className={classes.arrow}
                         style={{
                           display: isHorizontal ? 'block' : 'none',
                           width: 0,

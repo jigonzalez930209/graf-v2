@@ -1,5 +1,6 @@
 import {
   csvFileColum,
+  IColorScheme,
   IFileType,
   IGraftImpedanceType,
   IGraftState,
@@ -26,6 +27,8 @@ type GraftAction = {
     | 'setPlatform'
     | 'setLineOrPointWidth'
     | 'setIsFilesGrouped'
+    | 'setColorScheme'
+    | 'setSelectedFilesCount'
   payload:
     | INotification
     | IFileType
@@ -40,6 +43,7 @@ type GraftAction = {
     | ProcessFile
     | csvFileColum
     | IPlatform
+    | IColorScheme
 }
 
 export const graftReducer = (
@@ -132,6 +136,19 @@ export const graftReducer = (
       return {
         ...state,
         isFilesGrouped: action.payload as boolean,
+      }
+    }
+    case 'setColorScheme': {
+      return {
+        ...state,
+        colorScheme: action.payload as IColorScheme,
+      }
+    }
+
+    case 'setSelectedFilesCount': {
+      return {
+        ...state,
+        selectedFilesCount: action.payload as number,
       }
     }
 

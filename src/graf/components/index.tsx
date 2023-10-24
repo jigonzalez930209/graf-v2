@@ -10,17 +10,15 @@ import PlotlyChart from '@/components/plot'
 import { GrafContext } from '../context/GraftContext'
 import { LoadingsContext } from '../context/Loading'
 import { useData } from '../hooks/useData'
-import { IPlatform } from '../interfaces/interfaces'
 import { readAllFiles, readFilesUsingTauriProcess } from '../utils'
 
 const Index: React.FC = () => {
-  const { updateData, data } = useData()
+  const { updateData } = useData()
   const { graftState } = React.useContext(GrafContext)
   const {
     loading: { loading },
     setLoading,
   } = React.useContext(LoadingsContext)
-  const [platform, setPlatform] = React.useState<IPlatform>(null)
 
   const readFiles = React.useCallback(async () => {
     setLoading(true)
@@ -46,7 +44,6 @@ const Index: React.FC = () => {
   React.useEffect(() => {
     handleFileDropChange()
 
-    setPlatform('desktop')
     setLoading(false)
   }, [])
 

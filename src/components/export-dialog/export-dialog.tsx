@@ -71,44 +71,49 @@ const ExportDialog = ({ children }: ExportDialogProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogTitle> Select a columns to export </DialogTitle>
-        <div className='flex flex-row'>
-          <div className='flex flex-col gap-4'>
-            <label>Select columns to save</label>
-            <div className='flex w-full flex-col gap-4'>
-              {fileType === 'teq4Z' &&
-                COLUMNS_IMPEDANCE.map((column) => (
-                  <div className='flex w-full items-center gap-3'>
-                    <input
-                      type='checkbox'
-                      checked={state[column]}
-                      onChange={handleChange}
-                      id={column}
-                    />
-                    <label className='ml-5' key={column}>
-                      {column}
-                    </label>
-                  </div>
-                ))}
-              {fileType === 'teq4' &&
-                COLUMNS_VOLTAMETER.map((column) => (
-                  <div key={column} className='flex w-full items-center gap-3'>
-                    <input
-                      type='checkbox'
-                      checked={state[column]}
-                      onChange={handleChange}
-                      id={column}
-                    />
-                    <label className='ml-5' key={column}>
-                      {column}
-                    </label>
-                  </div>
-                ))}
+        {open && (
+          <div className='flex flex-row'>
+            <div className='flex flex-col gap-4'>
+              <label>Select columns to save</label>
+              <div className='flex w-full flex-col gap-4'>
+                {fileType === 'teq4Z' &&
+                  COLUMNS_IMPEDANCE.map((column) => (
+                    <div className='flex w-full items-center gap-3'>
+                      <input
+                        type='checkbox'
+                        checked={state[column]}
+                        onChange={handleChange}
+                        id={column}
+                      />
+                      <label className='ml-5' key={column}>
+                        {column}
+                      </label>
+                    </div>
+                  ))}
+                {fileType === 'teq4' &&
+                  COLUMNS_VOLTAMETER.map((column) => (
+                    <div
+                      key={column}
+                      className='flex w-full items-center gap-3'
+                    >
+                      <input
+                        type='checkbox'
+                        checked={state[column]}
+                        onChange={handleChange}
+                        id={column}
+                      />
+                      <label className='ml-5' key={column}>
+                        {column}
+                      </label>
+                    </div>
+                  ))}
+              </div>
+            </div>
+            <div>
+              <FileSort maxHeight='h-[35vh]' />
             </div>
           </div>
-          <div>
-            <FileSort maxHeight='h-[35vh]' />
-          </div>
-        </div>
+        )}
         <div className='m-3'>
           <label htmlFor='filename'>File Name</label>
           <Input

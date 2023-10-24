@@ -38,7 +38,7 @@ const extractSerialPoint = (
         color: COLORS[i],
         pointNumber,
         content: dataPoint,
-        selected: i === 0,
+        selected: false,
         impedance: impedance,
       })
     } else if (fileType(element.name) === 'teq4') {
@@ -60,7 +60,7 @@ const extractSerialPoint = (
         name: element.name,
         pointNumber: countX,
         content: dataPoint,
-        selected: i === 0,
+        selected: false,
         voltammeter: {
           samplesSec,
           cicles,
@@ -77,7 +77,7 @@ const extractSerialPoint = (
         content: files[i].content as string[][],
         selectedInvariableContentIndex: files[i].selectedInvariableContentIndex,
         invariableContent: files[i].invariableContent,
-        selected: i === 0,
+        selected: false,
 
         csv: { columns: files[i].columns },
       })

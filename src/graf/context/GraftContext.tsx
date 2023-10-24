@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import {
   csvFileColum,
+  IColorScheme,
   IFileType,
   IGraftImpedanceType,
   IGraftState,
@@ -27,6 +28,8 @@ export type GrafContextProps = {
   updateCSVfileColumn: (csvFileColum: csvFileColum) => void
   setPlatform: (platform: IPlatform) => void
   setIsFilesGrouped: (isFileGrouped: boolean) => void
+  setColorScheme: (colorScheme: IColorScheme) => void
+  setSelectedFilesCount: (count: number) => void
 }
 
 export const GrafContext = React.createContext<GrafContextProps>(

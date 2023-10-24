@@ -22,6 +22,8 @@ export interface IGraftState {
   files: ProcessFile[]
   platform: IPlatform
   isFilesGrouped: boolean
+  colorScheme: IColorScheme
+  selectedFilesCount: number
 }
 
 export type IPlatform = 'web' | 'desktop' | null
@@ -68,7 +70,7 @@ export type ProcessFile = {
   type: 'teq4' | 'teq4Z' | 'csv'
   pointNumber?: number
   content: string[][]
-  selected: boolean
+  selected: boolean | string
   invariableContent?: string[][]
   selectedInvariableContentIndex?: number
   color: string
@@ -96,7 +98,7 @@ export type Files = {
 export type csvFileColum = {
   id: string
   fileName: string
-  selected: boolean
+  selected: boolean | string
   x?: columns
   y?: columns
   y2?: columns
@@ -108,3 +110,5 @@ export type columns = {
   index: number
   color?: string
 }[]
+
+export type IColorScheme = string

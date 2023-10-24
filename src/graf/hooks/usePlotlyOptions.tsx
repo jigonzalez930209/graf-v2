@@ -64,8 +64,6 @@ const usePlotlyOptions = () => {
   const theme = useTheme()
   const t = defaultTheme(theme)
 
-  console.log(width, height)
-
   const {
     getImpedanceData,
     getModuleFace,

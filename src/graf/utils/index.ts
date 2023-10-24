@@ -9,7 +9,12 @@ export {
   saveProject,
   saveStorage,
 } from './tauri'
-export { COLORS, COLUMNS_IMPEDANCE, COLUMNS_VOLTAMETER } from './utils'
+export {
+  COLORS,
+  COLUMNS_IMPEDANCE,
+  COLUMNS_VOLTAMETER,
+  PALETTES,
+} from './utils'
 export { extractSerialPoint, fileType } from './common'
 export {
   readAllFilesUsingJS,
@@ -17,4 +22,3 @@ export {
   readAllWebProcess,
   readFileContentsUsingJS,
 } from './web'
-export { increaseSize, rotate, jelloVertical } from './animation'

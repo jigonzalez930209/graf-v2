@@ -6,7 +6,9 @@ import { GraftProvider, INITIAL_STATE } from './graf/context/GraftProvider'
 
 import './styles/globals.css'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+
+root.render(
   <React.StrictMode>
     <GraftProvider initialState={INITIAL_STATE}>
       <App />
