@@ -70,7 +70,7 @@ export type ProcessFile = {
   type: 'teq4' | 'teq4Z' | 'csv'
   pointNumber?: number
   content: string[][]
-  selected: boolean
+  selected: boolean | string
   invariableContent?: string[][]
   selectedInvariableContentIndex?: number
   color: string
@@ -98,7 +98,7 @@ export type Files = {
 export type csvFileColum = {
   id: string
   fileName: string
-  selected: boolean
+  selected: boolean | string
   x?: columns
   y?: columns
   y2?: columns
