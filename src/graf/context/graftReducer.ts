@@ -141,7 +141,7 @@ export const graftReducer = (
     case 'setColorScheme': {
       return {
         ...state,
-        colorScheme: action.payload as 'light' | 'dark' | 'custom',
+        colorScheme: action.payload as IColorScheme,
       }
     }
 
