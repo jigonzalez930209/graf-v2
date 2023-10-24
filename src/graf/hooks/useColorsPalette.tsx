@@ -26,11 +26,11 @@ const useColorsPalette = () => {
 
     if (selectedPalette && selectedFiles?.length > 0) {
       selectedFiles.map(
-        (file, i) =>
+        (file) =>
           file.selected &&
           updateFile({
             ...file,
-            color: selectedPalette[i],
+            color: selectedPalette[parseInt(file.selected.toString())],
           })
       )
     } else {
