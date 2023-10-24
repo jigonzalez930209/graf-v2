@@ -1,5 +1,5 @@
 import * as React from 'react'
-import _ from 'lodash'
+import _, { set } from 'lodash'
 
 import { GrafContext } from '../context/GraftContext'
 import {
@@ -8,6 +8,7 @@ import {
   ProcessFile,
 } from '../interfaces/interfaces'
 
+// TODO: refactor this hook in different and more specific hooks to each cain of data
 export const useData = () => {
   const {
     graftState,
@@ -79,7 +80,6 @@ export const useData = () => {
       ),
       csv: { columns: selectedFile.invariableContent[newSelectedIndex] },
     })
-    console.log(selectedColumn)
     updateCSVfileColumn({
       ...selectedColumn,
       notSelected,
@@ -89,41 +89,85 @@ export const useData = () => {
     })
   }
 
-  const changeSelectedFile = (id: string) => {
-    const file = graftState.files.find((file) => file.id === id)
-    if (!Boolean(file)) throw new Error('File not found')
+  const changeSelectedFile = React.useCallback(
+    async (id: string) => {
+      const file = graftState.files.find((file) => file.id === id)
 
-    if (graftState.selectedFilesCount === 10 && file.selected === false)
-      throw new Error('You can select only 10 files')
+      if (!Boolean(file)) throw new Error('File not found')
 
-    if (file.selected === true)
-      setSelectedFilesCount(graftState.selectedFilesCount - 1)
-    else setSelectedFilesCount(graftState.selectedFilesCount + 1)
+      if (graftState.selectedFilesCount === 10 && file.selected === false)
+        throw new Error('You can select only 10 files')
 
-    if (file.type === 'csv') {
-      setSelectedFile('csv')
-      setSelectedFilesCount(1)
-      setFiles(
-        graftState.files.map((file) => ({ ...file, selected: file.id === id }))
-      )
-      setColumns(
-        graftState.csvFileColum.map((c) => ({
-          ...c,
-          selected: c.fileName === file.name,
-        }))
-      )
-    } else if (file.type === graftState.fileType) {
-      setFiles(
-        graftState.files.map((file) =>
-          file.id === id ? { ...file, selected: !file.selected } : file
+      if (Boolean(file.selected)) {
+        await setSelectedFilesCount(graftState.selectedFilesCount - 1)
+      } else {
+        await setSelectedFilesCount(graftState.selectedFilesCount + 1)
+      }
+
+      if (file.type === 'csv') {
+        setSelectedFile('csv')
+        setSelectedFilesCount(1)
+        setFiles(
+          graftState.files.map((file) => ({
+            ...file,
+            selected: file.id === id,
+          }))
         )
-      )
-    } else {
-      setSelectedFile(file.type)
-      setFiles(
-        graftState.files.map((file) => ({ ...file, selected: file.id === id }))
-      )
-    }
+        setColumns(
+          graftState.csvFileColum.map((c) => ({
+            ...c,
+            selected: c.fileName === file.name,
+          }))
+        )
+      } else if (file.type === graftState.fileType) {
+        const files = graftState.files.map((f) =>
+          f.id === id
+            ? {
+                ...f,
+                selected: f.selected
+                  ? false
+                  : `${graftState.selectedFilesCount}`,
+              }
+            : {
+                ...f,
+                selected:
+                  parseInt(file.selected.toString()) <
+                  parseInt(f.selected.toString())
+                    ? `${parseInt(f.selected.toString()) - 1}`
+                    : f.selected,
+              }
+        )
+        setFiles(files)
+      } else {
+        setSelectedFile(file.type)
+        setFiles(
+          graftState.files.map((file) => ({
+            ...file,
+            selected: file.id === id ? '0' : false,
+          }))
+        )
+      }
+    },
+    [
+      graftState.files,
+      graftState.selectedFilesCount,
+      graftState.fileType,
+      graftState.csvFileColum,
+      setSelectedFile,
+      setSelectedFilesCount,
+      setFiles,
+      setColumns,
+    ]
+  )
+
+  const cleanSelectionFiles = () => {
+    setFiles(
+      graftState.files.map((file) => ({
+        ...file,
+        selected: false,
+      }))
+    )
+    setSelectedFilesCount(0)
   }
 
   const getImpedanceData = () => {
@@ -133,6 +177,10 @@ export const useData = () => {
 
     return graftState.files
       .filter((file) => file.selected)
+      .sort(
+        (a, b) =>
+          parseInt(a.selected.toString()) - parseInt(b.selected.toString())
+      )
       .map((file) => ({
         ...file,
         content: file.content.map((c) => [
@@ -148,6 +196,10 @@ export const useData = () => {
     }
     const impedanceData = graftState.files
       .filter((file) => file.selected)
+      .sort(
+        (a, b) =>
+          parseInt(a.selected.toString()) - parseInt(b.selected.toString())
+      )
       .map((file) => ({
         ...file,
         content: file.content.map((c, i) => ({
@@ -273,6 +325,10 @@ export const useData = () => {
     }
     return graftState.files
       .filter((file) => file.selected)
+      .sort(
+        (a, b) =>
+          parseInt(a.selected.toString()) - parseInt(b.selected.toString())
+      )
       .map((file) => ({
         ...file,
         content: file.content.map((c, i) => ({
@@ -340,5 +396,6 @@ export const useData = () => {
     getCSVData,
     exportVoltammeterDataToExcel,
     updateFileContent,
+    cleanSelectionFiles,
   }
 }
