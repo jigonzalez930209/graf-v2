@@ -75,12 +75,13 @@
       {
         "fullscreen": false,
         "title": "graf-v2",
-        "center": true,
-        "resizable": true,
-        "decorations": false,
-        "transparent": true,
-        "height": 920,
-        "width": 1300
+        "resizable": false,
+        "maximizable": false,
+        "decorations": true,
+        "transparent": false,
+        "fileDropEnabled": true,
+        "maximized": true,
+        "contentProtected": true
       }
     ]
   }
