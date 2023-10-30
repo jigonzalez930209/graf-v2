@@ -10,6 +10,7 @@ import PlotlyChart from '@/components/plot'
 import { GrafContext } from '../context/GraftContext'
 import { LoadingsContext } from '../context/Loading'
 import { useData } from '../hooks/useData'
+import usePlotlyOptions from '../hooks/usePlotlyOptions'
 import { readAllFiles, readFilesUsingTauriProcess } from '../utils'
 
 const Index: React.FC = () => {
@@ -20,6 +21,7 @@ const Index: React.FC = () => {
     setLoading,
   } = React.useContext(LoadingsContext)
 
+  const { data, layout, config } = usePlotlyOptions()
   const readFiles = React.useCallback(async () => {
     setLoading(true)
 
@@ -54,9 +56,29 @@ const Index: React.FC = () => {
       <div className='flex max-h-full max-w-full'>
         <Drawer variant='left' />
         {graftState?.fileType === 'csv' ? (
-          <DragDrop PlotlyChart={<PlotlyChart />} />
+          <DragDrop
+            PlotlyChart={
+              <PlotlyChart
+                layout={layout}
+                config={config}
+                data={data}
+                fileType={graftState.fileType}
+                exportFileName={
+                  graftState.files.find((file) => file.selected)?.name
+                }
+              />
+            }
+          />
         ) : (
-          <PlotlyChart />
+          <PlotlyChart
+            layout={layout}
+            config={config}
+            data={data}
+            fileType={graftState.fileType}
+            exportFileName={
+              graftState.files.find((file) => file.selected)?.name
+            }
+          />
         )}
       </div>
     </>
