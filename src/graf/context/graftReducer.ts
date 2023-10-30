@@ -1,5 +1,7 @@
 import {
+  ConcInputValue,
   csvFileColum,
+  FrequencyValues,
   IColorScheme,
   IFileType,
   IGraftImpedanceType,
@@ -29,6 +31,8 @@ type GraftAction = {
     | 'setIsFilesGrouped'
     | 'setColorScheme'
     | 'setSelectedFilesCount'
+    | 'setCalcToUniqueFrequency'
+    | 'setSelectFilesToCalcUniqueFrequency'
   payload:
     | INotification
     | IFileType
@@ -44,6 +48,8 @@ type GraftAction = {
     | csvFileColum
     | IPlatform
     | IColorScheme
+    | FrequencyValues[]
+    | ConcInputValue[]
 }
 
 export const graftReducer = (
@@ -149,6 +155,20 @@ export const graftReducer = (
       return {
         ...state,
         selectedFilesCount: action.payload as number,
+      }
+    }
+
+    case 'setCalcToUniqueFrequency': {
+      return {
+        ...state,
+        uniqueFrequencyCalc: action.payload as FrequencyValues[],
+      }
+    }
+
+    case 'setSelectFilesToCalcUniqueFrequency': {
+      return {
+        ...state,
+        concInputValues: action.payload as ConcInputValue[],
       }
     }
 
