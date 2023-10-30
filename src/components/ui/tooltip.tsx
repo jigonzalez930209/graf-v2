@@ -19,7 +19,7 @@ const TooltipContent = React.forwardRef<
     ref={ref}
     sideOffset={sideOffset}
     className={cn(
-      'overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+      'overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md  fade-in-0 zoom-in-95',
       className
     )}
     {...props}
@@ -58,11 +58,13 @@ const CustomTooltip = (props: CustomTooltipProps) => {
         </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
-            className='z-50 mt-1 select-none rounded-[4px] border border-slate-500 bg-background px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade'
+            className='z-50 mt-1 select-none rounded-[4px] border border-slate-500 bg-background px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] '
             sideOffset={5}
           >
-            {title && <div className='inline-block font-bold'>{title}</div>}{' '}
-            {content && <div className='text-[14px]'>{content}</div>}
+            {title && (
+              <div className='inline-block text-[12px] font-bold'>{title}</div>
+            )}{' '}
+            {content && <div className='text-[12]'>{content}</div>}
             <TooltipPrimitive.Arrow className=' fill-slate-500' />
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>

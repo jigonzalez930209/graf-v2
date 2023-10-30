@@ -52,7 +52,9 @@ export const ProjectMenu = () => {
 
   return (
     <MenubarMenu>
-      <MenubarTrigger className='relative'>Project</MenubarTrigger>
+      <MenubarTrigger className='relative hover:bg-secondary'>
+        Project
+      </MenubarTrigger>
       <MenubarContent>
         {/* TODO: Implement handle project in next versions */}
         <MenubarItem disabled onClick={addNewProject}>

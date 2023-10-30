@@ -24,6 +24,8 @@ export interface IGraftState {
   isFilesGrouped: boolean
   colorScheme: IColorScheme
   selectedFilesCount: number
+  uniqueFrequencyCalc: FrequencyValues[]
+  concInputValues: ConcInputValue[]
 }
 
 export type IPlatform = 'web' | 'desktop' | null
@@ -112,3 +114,29 @@ export type columns = {
 }[]
 
 export type IColorScheme = string
+
+export type SortedByFrequency = {
+  [freq: number]: {
+    module: number
+    value: number
+    phase: number
+    zi: number
+    zr: number
+  }[]
+}
+
+export type FrequencyValues = {
+  [i: number]: {
+    frequency: number
+    module: { m: number; b: number; r: number }
+    phase: { m: number; b: number; r: number }
+    zi: { m: number; b: number; r: number }
+    zr: { m: number; b: number; r: number }
+  }
+}
+
+export type ConcInputValue = {
+  id: ProcessFile['id']
+  name: ProcessFile['name']
+  value: number
+}

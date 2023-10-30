@@ -39,7 +39,7 @@ const StaticValues = ({ drawerOpen = true, width = 720, height = 540 }) => ({
   },
 })
 
-const hovertemplate = (name: string) => `
+export const hovertemplate = (name: string) => `
   <b>${name}</b><br>
   <br>
   %{yaxis.title.text}: %{y}<br>

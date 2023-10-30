@@ -1,7 +1,9 @@
 import * as React from 'react'
 
 import {
+  ConcInputValue,
   csvFileColum,
+  FrequencyValues,
   IColorScheme,
   IFileType,
   IGraftImpedanceType,
@@ -30,6 +32,8 @@ export type GrafContextProps = {
   setIsFilesGrouped: (isFileGrouped: boolean) => void
   setColorScheme: (colorScheme: IColorScheme) => void
   setSelectedFilesCount: (count: number) => void
+  setCalcToUniqueFrequency: (calcToUniqueFrequency: FrequencyValues[]) => void
+  setSelectFilesToCalcUniqueFrequency: (inputFiles: ConcInputValue[]) => void
 }
 
 export const GrafContext = React.createContext<GrafContextProps>(

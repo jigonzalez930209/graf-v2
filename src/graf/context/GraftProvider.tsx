@@ -1,7 +1,9 @@
 import * as React from 'react'
 
 import {
+  ConcInputValue,
   csvFileColum,
+  FrequencyValues,
   IColorScheme,
   IFileType,
   IGraftImpedanceType,
@@ -35,6 +37,8 @@ export const INITIAL_STATE: IGraftState = {
   isFilesGrouped: false,
   colorScheme: '1',
   selectedFilesCount: 0,
+  uniqueFrequencyCalc: [],
+  concInputValues: [],
 }
 
 interface props {
@@ -89,6 +93,18 @@ export const GraftProvider = ({ children, initialState }: props) => {
   const setSelectedFilesCount = (count: number) =>
     dispatch({ type: 'setSelectedFilesCount', payload: count })
 
+  const setCalcToUniqueFrequency = (calcToUniqueFrequency: FrequencyValues[]) =>
+    dispatch({
+      type: 'setCalcToUniqueFrequency',
+      payload: calcToUniqueFrequency,
+    })
+
+  const setSelectFilesToCalcUniqueFrequency = (input: ConcInputValue[]) =>
+    dispatch({
+      type: 'setSelectFilesToCalcUniqueFrequency',
+      payload: input,
+    })
+
   React.useEffect(() => {
     setGraftState(initialState)
   }, [initialState])
@@ -113,6 +129,8 @@ export const GraftProvider = ({ children, initialState }: props) => {
         setLineOrPointWidth,
         setColorScheme,
         setSelectedFilesCount,
+        setCalcToUniqueFrequency,
+        setSelectFilesToCalcUniqueFrequency,
       }}
     >
       {children}

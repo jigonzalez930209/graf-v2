@@ -16,7 +16,7 @@ export function MenuModeToggle() {
 
   return (
     <MenubarMenu>
-      <MenubarTrigger>Theme</MenubarTrigger>
+      <MenubarTrigger className='hover:bg-secondary'>Theme</MenubarTrigger>
       <MenubarContent forceMount>
         <MenubarRadioGroup value={theme}>
           <MenubarRadioItem value='light' onClick={() => setTheme('light')}>
