@@ -91,6 +91,7 @@
     "remark-math": "^6.0.0",
     "remark-slug": "^7.0.1",
     "remark-toc": "^9.0.0",
+    "simple-statistics": "^7.8.3",
     "sortablejs": "^1.15.0",
     "styled-components": "^6.1.0",
     "tailwind-scrollbar": "^3.0.5",
