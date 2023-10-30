@@ -1,18 +1,27 @@
 import * as React from 'react'
-import { GrafContext } from '@/graf/context/GraftContext'
-import usePlotlyOptions from '@/graf/hooks/usePlotlyOptions'
+import { ProcessFile } from '@/graf/interfaces/interfaces'
 import { useTheme } from 'next-themes'
 import Plotly from 'react-plotly.js'
 
 import { defaultTheme } from '@/lib/utils'
 
-const PlotlyChart = () => {
-  const { data, layout, config } = usePlotlyOptions()
+type PlotlyChartProps = {
+  exportFileName: string
+  fileType: ProcessFile['type']
+  data: any
+  layout: any
+  config: any
+}
+
+const PlotlyChart = ({
+  exportFileName,
+  fileType,
+  data,
+  layout,
+  config,
+}: PlotlyChartProps) => {
   const theme = useTheme()
   const t = defaultTheme(theme)
-  const {
-    graftState: { fileType, files },
-  } = React.useContext(GrafContext)
   const [zoomState, setZoomState] = React.useState<{
     xRange: number[]
     yRange: number[]
@@ -82,12 +91,9 @@ const PlotlyChart = () => {
         ...config,
         toImageButtonOptions: {
           format: 'svg', // one of png, svg, jpeg, webp
-          filename:
-            files?.length > 0
-              ? files.find(({ selected }) => selected)?.name
-              : 'graft',
-          height: 500,
-          width: 700,
+          filename: exportFileName || 'graft',
+          height: 750,
+          width: 1050,
           scale: 1, // Multiply title/legend/axis/canvas sizes by this factor
         },
       }}
