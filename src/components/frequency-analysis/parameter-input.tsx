@@ -44,81 +44,79 @@ const ParameterInput = () => {
   }
 
   return (
-    <div className='mb-2 border-b'>
-      <ul className='mb-5 grid grid-cols-3 gap-4'>
-        {concInputValues.map((inputValue) => (
-          <li
-            className='grid grid-cols-3 items-center justify-center'
-            key={inputValue.id}
-          >
-            <p className='col-span-2 truncate'>
-              <Button
-                size='icon'
-                variant='ghost'
-                className='ml-2 mr-1 h-4 w-4 rounded-full'
-                onClick={() => handleRemoveConcValues(inputValue.id)}
-              >
-                <XIcon className='h-3 w-3 text-red-500' />
-              </Button>
-              {inputValue.name}--------------------------------
-            </p>
-            <Input
-              className='col-span-1'
-              type='number'
-              value={inputValue.value}
-              onChange={(e) => {
-                const value = parseFloat(e.target.value)
-                handleSetConcValues({ ...inputValue, value })
-              }}
-            />
-          </li>
-        ))}
-        <li className='grid w-full grid-cols-4 items-center justify-center gap-4'>
-          <div className='col-span-3'>
-            <Select
-              onValueChange={(i) =>
-                handleSetConcValues({
-                  id: i,
-                  name: files.find((f) => f.id === i).name,
-                  value: 0.1,
-                })
-              }
-              defaultValue={null}
-              value={null}
-            >
-              <SelectTrigger>
-                <p className=' w-full text-xs'>
-                  Select a file to add to the analysis
-                </p>
-              </SelectTrigger>
-              {/* TODO: make a not files to select  */}
-              <SelectContent>
-                {files
-                  .filter(
-                    (f) =>
-                      f.type === 'teq4Z' &&
-                      concInputValues.find((c) => c.id === f.id) === undefined
-                  )
-                  .map((file) => (
-                    <SelectItem value={file.id} key={file.id}>
-                      {file.name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className='flex w-full justify-center'>
+    <ul className='mb-5 grid grid-cols-3 gap-4'>
+      {concInputValues.map((inputValue) => (
+        <li
+          className='grid grid-cols-3 items-center justify-center'
+          key={inputValue.id}
+        >
+          <p className='col-span-2 truncate'>
             <Button
-              className='w-28 self-center bg-green-500 hover:bg-green-600'
-              variant='secondary'
-              onClick={handleCalculateFrequency}
+              size='icon'
+              variant='ghost'
+              className='ml-2 mr-1 h-4 w-4 rounded-full'
+              onClick={() => handleRemoveConcValues(inputValue.id)}
             >
-              Calculate
+              <XIcon className='h-3 w-3 text-red-500' />
             </Button>
-          </div>
+            {inputValue.name}
+          </p>
+          <Input
+            className='col-span-1'
+            type='number'
+            value={inputValue.value}
+            onChange={(e) => {
+              const value = parseFloat(e.target.value)
+              handleSetConcValues({ ...inputValue, value })
+            }}
+          />
         </li>
-      </ul>
-    </div>
+      ))}
+      <li className='grid w-full grid-cols-4 items-center justify-center gap-4'>
+        <div className='col-span-3'>
+          <Select
+            onValueChange={(i) =>
+              handleSetConcValues({
+                id: i,
+                name: files.find((f) => f.id === i).name,
+                value: 0.1,
+              })
+            }
+            defaultValue={null}
+            value={null}
+          >
+            <SelectTrigger>
+              <p className=' w-full text-xs'>
+                Select a file to add to the analysis
+              </p>
+            </SelectTrigger>
+            {/* TODO: make a not files to select  */}
+            <SelectContent>
+              {files
+                .filter(
+                  (f) =>
+                    f.type === 'teq4Z' &&
+                    concInputValues.find((c) => c.id === f.id) === undefined
+                )
+                .map((file) => (
+                  <SelectItem value={file.id} key={file.id}>
+                    {file.name}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className='flex w-full justify-center'>
+          <Button
+            className='w-28 self-center bg-green-500 hover:bg-green-600'
+            variant='secondary'
+            onClick={handleCalculateFrequency}
+          >
+            Calculate
+          </Button>
+        </div>
+      </li>
+    </ul>
   )
 }
 
