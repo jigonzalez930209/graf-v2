@@ -1,6 +1,12 @@
+import * as FileSaver from 'file-saver'
 import _ from 'lodash'
+import XLSX from 'xlsx'
 
-import { ProcessFile } from '../interfaces/interfaces'
+import {
+  ConcInputValue,
+  FrequencyValues,
+  ProcessFile,
+} from '../interfaces/interfaces'
 import { COLORS } from './utils'
 
 const extractSerialPoint = (
@@ -95,4 +101,64 @@ const fileType = (fileName: string): string => {
   else return null
 }
 
-export { fileType, extractSerialPoint }
+const exportExcelFrequency = ({
+  uniqueFrequencyCalc,
+  concInputValues,
+  fileName,
+}: {
+  uniqueFrequencyCalc: FrequencyValues[]
+  concInputValues: ConcInputValue[]
+  fileName: string
+}) => {
+  const fileType =
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8'
+  const fileExtension = '.xlsx'
+  const frequency = XLSX.utils.json_to_sheet(
+    uniqueFrequencyCalc.map((g, i) => ({
+      frequencyLog: g[i].frequency,
+      '': '',
+      module_slope: g[i].module.m,
+      phase_slope: g[i].phase.m,
+      zi_slope: g[i].zi.m,
+      zr_slope: g[i].zr.m,
+      ' ': '',
+      'module_R^2': g[i].module.r,
+      'phaseR_R^2': g[i].phase.r,
+      'zi_R^2': g[i].zi.r,
+      'zr_R^2': g[i].zr.r,
+      '  ': '',
+      module_b: g[i].module.b,
+      phase_b: g[i].phase.b,
+      zi_b: g[i].zi.b,
+      zr_b: g[i].zr.b,
+    }))
+  )
+  const files = XLSX.utils.json_to_sheet(
+    concInputValues.map((c) => ({
+      file: c.name,
+      concentration: c.value,
+    }))
+  )
+  const wb = {
+    Sheets: { frequency: frequency, conc: files },
+    SheetNames: ['frequency', 'conc'],
+  }
+  const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: fileType })
+  FileSaver.saveAs(data, fileName + fileExtension)
+}
+
+const exportExcelImpedance = () => {
+  throw new Error('Not implemented')
+}
+const exportExcelVoltametry = () => {
+  throw new Error('Not Voltametry')
+}
+
+export {
+  fileType,
+  extractSerialPoint,
+  exportExcelFrequency,
+  exportExcelImpedance,
+  exportExcelVoltametry,
+}

@@ -1,7 +1,7 @@
 {
   "name": "graf-v2",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -91,6 +91,7 @@
     "remark-math": "^6.0.0",
     "remark-slug": "^7.0.1",
     "remark-toc": "^9.0.0",
+    "sheetjs-style": "^0.15.8",
     "simple-statistics": "^7.8.3",
     "sortablejs": "^1.15.0",
     "styled-components": "^6.1.0",
