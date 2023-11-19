@@ -88,13 +88,13 @@
       {
         "fullscreen": false,
         "title": "graf-v2",
-        "resizable": false,
-        "maximizable": false,
+        "resizable": true,
+        "maximizable": true,
         "decorations": true,
         "transparent": false,
         "fileDropEnabled": true,
         "maximized": true,
-        "contentProtected": true
+        "contentProtected": false
       }
     ]
   }
