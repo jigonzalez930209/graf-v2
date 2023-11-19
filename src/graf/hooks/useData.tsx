@@ -1,5 +1,5 @@
 import * as React from 'react'
-import _, { set } from 'lodash'
+import _ from 'lodash'
 
 import { GrafContext } from '../context/GraftContext'
 import {
