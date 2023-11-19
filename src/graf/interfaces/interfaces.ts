@@ -37,7 +37,7 @@ export type IGraftImpedanceType = 'Bode' | 'Nyquist' | 'ZiZrVsFreq'
 export type IFileType = 'teq4Z' | 'teq4' | 'csv' | null
 
 export type IGraftData =
-  | 'IMPEDANCE_MODULE_FASE'
+  | 'IMPEDANCE_MODULE_PHASE'
   | 'IMPEDANCE_ZiZr'
   | 'VC_V_vs_I'
   | 'VC_t_vs_I'
@@ -60,7 +60,7 @@ export type ExportData = {
     Time?: number
     Frequency?: number
     Module?: number
-    Fase?: number
+    Phase?: number
     ZI?: number
     ZR?: number
   }[]

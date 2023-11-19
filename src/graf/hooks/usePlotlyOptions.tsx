@@ -93,9 +93,9 @@ const usePlotlyOptions = () => {
                   x: d.content.map((i) => i.face.x),
                   y: d.content.map((i) => i.face.y),
                   type: 'scatter',
-                  hovertemplate: hovertemplate(`fase_${d.name}`),
+                  hovertemplate: hovertemplate(`phase_${d.name}`),
                   mode: graftType === 'line' ? 'lines+markers' : 'markers',
-                  name: `fase_${d.name}`,
+                  name: `phase_${d.name}`,
                   marker: {
                     color: d.color,
                     size:
@@ -165,7 +165,7 @@ const usePlotlyOptions = () => {
               },
             },
             yaxis2: {
-              title: 'Fase',
+              title: 'Phase',
               overlaying: 'y',
               side: 'right',
               titlefont: { color: fontColor, size: 18 },
