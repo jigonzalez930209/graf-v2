@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import * as Popover from '@radix-ui/react-popover'
 import { getName, getVersion } from '@tauri-apps/plugin-app'
 import { SettingsIcon } from 'lucide-react'
 
@@ -16,7 +15,8 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar'
 import {
-  Popover as CustomPopover,
+  Popover,
+  PopoverArrow,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
@@ -27,6 +27,7 @@ import ProjectHandler from '../app-bar/project-handler'
 import { Settings } from '../app-bar/settings'
 import ExportModal from '../export-dialog'
 import FrequencyAnalysisDialog from '../frequency-analysis/frequency-analysis-dialog'
+import ImportDialog from '../table-dialog/import-dialog'
 import { Dialog, DialogTrigger } from '../ui/dialog'
 import CustomTooltip from '../ui/tooltip'
 import { MenuModeToggle } from './menu-mode-toggle'
@@ -110,7 +111,7 @@ export function Menu() {
           <Popover.Arrow className='fill-primary' />
         </PopoverContent>
       </CustomPopover> */}
-        <CustomPopover>
+        <Popover>
           <PopoverTrigger>
             <CustomTooltip
               title='Settings'
@@ -119,9 +120,9 @@ export function Menu() {
           </PopoverTrigger>
           <PopoverContent className='h-auto w-auto bg-secondary'>
             <Settings />
-            <Popover.Arrow className='fill-primary' />
+            <PopoverArrow className='fill-primary' />
           </PopoverContent>
-        </CustomPopover>
+        </Popover>
         <ProjectHandler />
         {!['csv', null].includes(fileType) && (
           <ExportModal>
@@ -132,6 +133,11 @@ export function Menu() {
         )}
 
         <FrequencyAnalysisDialog />
+        <ImportDialog>
+          <Button className='uppercase' variant='ghost'>
+            Import
+          </Button>
+        </ImportDialog>
       </div>
     </Menubar>
   )
