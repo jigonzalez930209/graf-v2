@@ -155,10 +155,27 @@ const exportExcelVoltametry = () => {
   throw new Error('Not Voltametry')
 }
 
+const homogenizeMatrix = (matrix, defaultValue) => {
+  // Get the maximum length of all rows
+  const maxLength = Math.max(...matrix.map((row) => row.length))
+
+  // Fill rows with blank values or the default value
+  const homogenizedMatrix = matrix.map((row) => {
+    // If the row is shorter than the maximum length, fill with blank values or the default value
+    while (row.length < maxLength) {
+      row.push(defaultValue)
+    }
+    return row
+  })
+
+  return homogenizedMatrix
+}
+
 export {
   fileType,
   extractSerialPoint,
   exportExcelFrequency,
   exportExcelImpedance,
   exportExcelVoltametry,
+  homogenizeMatrix,
 }
