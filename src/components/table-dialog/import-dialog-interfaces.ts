@@ -25,12 +25,12 @@ export type ExcelTableProps = {
   setSelected: React.Dispatch<React.SetStateAction<ExcelTableSelected>>
 }
 
-export type Variables = 'module' | 'phase' | 'frequency'
-export type Colors = 'blue' | 'green' | 'red'
+export type Variables = 'module' | 'phase' | 'frequency' | 'zi' | 'zr'
+export type Colors = 'blue' | 'green' | 'red' | 'yellow' | 'purple'
 
 export type SelectionFooterProps = {
   selected: { row: number; col: number }
-  handleSelect: (currentSelected: CurrentSelected) => void
+  handleSelect: (currentSelected: CurrentSelected, isClean?: boolean) => void
 }
 
 export type CurrentSelected = {
