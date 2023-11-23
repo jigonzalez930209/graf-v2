@@ -118,7 +118,6 @@ const ExcelTable = ({
           beforeChange={onBeforeHotChange}
           settings={settings}
           afterSelection={handleSelection}
-          colHeaders={(i) => `${i + 1}`}
           cells={(row, col) => {
             let cellProperties: any = {}
             if (row === selected?.row - 1) {
