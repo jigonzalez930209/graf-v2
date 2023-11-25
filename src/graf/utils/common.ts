@@ -38,7 +38,7 @@ const extractSerialPoint = (
         totalPoints: parseInt(arrayFile[105].split(',')[0]),
       }
       processFile.push({
-        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
+        id: generateRandomId(),
         type: 'teq4Z',
         name: element.name,
         color: COLORS[i],
@@ -60,7 +60,7 @@ const extractSerialPoint = (
       const totalTime = countX / samplesSec
 
       processFile.push({
-        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
+        id: generateRandomId(),
         color: COLORS[i],
         type: 'teq4',
         name: element.name,
@@ -76,7 +76,7 @@ const extractSerialPoint = (
       })
     } else if (fileType(element.name) === 'csv') {
       processFile.push({
-        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
+        id: generateRandomId(),
         color: COLORS[i],
         type: 'csv',
         name: element.name,
@@ -101,7 +101,7 @@ const fileType = (fileName: string): string => {
   else return null
 }
 
-const exportExcelFrequency = ({
+const exportExcelFrequencyAnalysis = ({
   uniqueFrequencyCalc,
   concInputValues,
   fileName,
@@ -171,11 +171,15 @@ const homogenizeMatrix = (matrix, defaultValue) => {
   return homogenizedMatrix
 }
 
+const generateRandomId = () =>
+  (+new Date() * Math.random()).toString(36).substring(0, 6)
+
 export {
   fileType,
   extractSerialPoint,
-  exportExcelFrequency,
+  exportExcelFrequencyAnalysis as exportExcelFrequency,
   exportExcelImpedance,
   exportExcelVoltametry,
   homogenizeMatrix,
+  generateRandomId,
 }
