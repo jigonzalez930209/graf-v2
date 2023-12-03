@@ -18,7 +18,7 @@ export const ProjectMenu = () => {
   const { graftState, setFiles, setGraftState } = React.useContext(GrafContext)
   const [loading, setLoading] = React.useState(false)
   const t = useToast()
-  const { updateData } = useData()
+  const { updateData, addFiles } = useData()
 
   const addNewProject = () => {}
 
@@ -26,6 +26,14 @@ export const ProjectMenu = () => {
     setLoading(true)
 
     updateData(
+      await readFilesUsingTauriProcess().finally(() => setLoading(false))
+    )
+  }, [])
+
+  const addFilesToState = React.useCallback(async () => {
+    setLoading(true)
+
+    addFiles(
       await readFilesUsingTauriProcess().finally(() => setLoading(false))
     )
   }, [])
@@ -58,20 +66,30 @@ export const ProjectMenu = () => {
       <MenubarContent>
         {/* TODO: Implement handle project in next versions */}
         <MenubarItem disabled onClick={addNewProject}>
-          New <MenubarShortcut>⌘N</MenubarShortcut>
+          New
+          {/* <MenubarShortcut>⌘N</MenubarShortcut> */}
         </MenubarItem>
         <MenubarItem onClick={readFiles}>
-          Open <MenubarShortcut>⌘O</MenubarShortcut>
+          Open files
+          {/* <MenubarShortcut>⌘O</MenubarShortcut> */}
         </MenubarItem>
-        <MenubarItem>
-          Save <MenubarShortcut>⌘S</MenubarShortcut>
+        <MenubarItem onClick={addFilesToState}>
+          Add files
+          {/* <MenubarShortcut>⌘O</MenubarShortcut> */}
+        </MenubarItem>
+
+        <MenubarItem disabled>
+          Save
+          {/* <MenubarShortcut>⌘S</MenubarShortcut> */}
         </MenubarItem>
         <MenubarSeparator />
-        <MenubarItem>
-          Import <MenubarShortcut>⌘I</MenubarShortcut>
+        <MenubarItem disabled>
+          Import
+          {/* <MenubarShortcut>⌘I</MenubarShortcut> */}
         </MenubarItem>
-        <MenubarItem>
-          Export <MenubarShortcut>⌘E</MenubarShortcut>
+        <MenubarItem disabled>
+          Export
+          {/* <MenubarShortcut>⌘E</MenubarShortcut> */}
         </MenubarItem>
       </MenubarContent>
     </MenubarMenu>
