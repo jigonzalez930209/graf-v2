@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { LoadingsContext } from '@/graf/context/Loading'
 import useImportData from '@/graf/hooks/useImportData'
 import { ProcessFile } from '@/graf/interfaces/interfaces'
 import { homogenizeMatrix } from '@/graf/utils/common'
+import { openImportTemplate, saveImportTemplate } from '@/graf/utils/tauri'
 import _ from 'lodash'
-import { Import } from 'lucide-react'
+import { FolderOpenIcon, Import, SaveIcon } from 'lucide-react'
 import { useSnackbar } from 'notistack'
 import * as XLSX from 'xlsx'
 
@@ -25,8 +27,11 @@ import {
 } from './import-dialog-interfaces'
 import SelectionFooter from './selection-footer'
 
+// TODO: Fix selections errors when importing data from template file and separate in different components for each button action
+
 const ImportDialog = ({ children }) => {
   const { importDataTeq4Z } = useImportData()
+  const { setLoading } = React.useContext(LoadingsContext)
   const [data, setData] = useState<ExcelTableData>()
   const [selected, setSelected] = useState<ExcelTableSelected>()
   const [open, setOpen] = useState(false)
@@ -51,6 +56,7 @@ const ImportDialog = ({ children }) => {
   const handleClickOpenFile = () => inputRefImportFile.current.click()
 
   const handleImportClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true)
     setData(null)
     setSelected(null)
     setColumns([])
@@ -112,6 +118,7 @@ const ImportDialog = ({ children }) => {
     }
     reader.readAsBinaryString(file)
     event.target.value = null
+    setLoading(false)
   }
 
   const handleSelect = (currentSelected: CurrentSelected, isClean = false) => {
@@ -130,6 +137,7 @@ const ImportDialog = ({ children }) => {
   }
 
   const handleImport = () => {
+    setLoading(true)
     try {
       const index = {
         frequency: columns.find((c) => c.variable === 'frequency').col - 1,
@@ -180,8 +188,31 @@ const ImportDialog = ({ children }) => {
     } catch (e) {
       enqueueSnackbar('Something went wrong' + e, { variant: 'error' })
       console.log(e)
+    } finally {
+      setLoading(false)
     }
   }
+
+  const handleOpenImportTemplate = React.useCallback(async () => {
+    setLoading(true)
+    const template = await openImportTemplate()
+    setColumns(template.data.columns)
+    setSelected((prev) => ({ ...prev, row: template.data.row }))
+    enqueueSnackbar(template.notification.message, {
+      variant: template.notification.variant,
+    })
+    setLoading(false)
+  }, [])
+
+  const handleClickSaveFileTemplate = React.useCallback(async () => {
+    setLoading(true)
+    const notification = await saveImportTemplate({
+      columns,
+      row: selected.row || 0,
+    })
+    enqueueSnackbar(notification.message, { variant: notification.variant })
+    setLoading(false)
+  }, [columns])
 
   return (
     <Dialog open={open} onOpenChange={(o) => setOpen(o)}>
@@ -204,19 +235,22 @@ const ImportDialog = ({ children }) => {
             onChange={handleImportClick}
           />
           <Button
-            onClick={handleClickOpenFile}
+            onClick={handleClickSaveFileTemplate}
+            className='h-6 w-6 rounded-full'
+            variant='ghost'
+            size='icon'
+            disabled={columns.length < 2}
+          >
+            <SaveIcon className='h-4 w-4' />
+          </Button>
+          <Button
+            onClick={handleOpenImportTemplate}
             className='h-6 w-6 rounded-full'
             variant='ghost'
             size='icon'
           >
-            <Import className='h-4 w-4' />
+            <FolderOpenIcon className='h-4 w-4' />
           </Button>
-          <input
-            ref={inputRefImportFile}
-            style={{ display: 'none' }}
-            type='file'
-            onChange={handleImportClick}
-          />
         </DialogTitle>
 
         {data?.length && (
