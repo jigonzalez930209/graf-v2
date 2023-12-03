@@ -56,17 +56,6 @@ export function Menu() {
 
   return (
     <Menubar className='z-50 w-full rounded-none border-b border-none pl-2 lg:pl-3'>
-      {/* <MenubarMenu>
-        <CustomTooltip
-          title='Graf is a tool for creating and managing graphs.'
-          Icon={
-            <div className='inline-flex h-fit w-fit items-center text-cyan-500'>
-              <AreaChartIcon className='h-5 w-5' />
-            </div>
-          }
-        />
-      </MenubarMenu> */}
-
       <MenubarMenu>
         <MenubarTrigger className='mx-auto min-w-max font-bold capitalize hover:bg-secondary'>
           {name}
@@ -78,19 +67,10 @@ export function Menu() {
             </DialogTrigger>
 
             <MenubarSeparator />
-            <MenubarItem>
-              Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
-            </MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem>
-              Hide Music... <MenubarShortcut>⌘H</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem>
-              Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
-            </MenubarItem>
             <MenubarShortcut />
             <MenubarItem onClick={closeWindow}>
-              Quit Music <MenubarShortcut>⌘Q</MenubarShortcut>
+              Quit
+              {/* <MenubarShortcut >⌘Q</MenubarShortcut> */}
             </MenubarItem>
           </MenubarContent>
           <AboutDialog />
@@ -99,18 +79,7 @@ export function Menu() {
       <ProjectMenu />
 
       <MenuModeToggle />
-      <div className='flex w-full justify-center gap-3 pl-4 '>
-        {/* <CustomPopover>
-        <PopoverTrigger>
-          <Button className='uppercase' variant='ghost'>
-            Project
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className=' bg-secondary'>
-          <Project />
-          <Popover.Arrow className='fill-primary' />
-        </PopoverContent>
-      </CustomPopover> */}
+      <div className='flex w-full justify-center gap-3 pl-4'>
         <Popover>
           <PopoverTrigger>
             <CustomTooltip
