@@ -4,6 +4,8 @@ import { Store } from '@tauri-apps/plugin-store'
 import _ from 'lodash'
 import { read, utils, write } from 'xlsx'
 
+import { Colors, Variables } from '@/components/table-dialog'
+
 import { IGraftState, ProcessFile } from '../interfaces/interfaces'
 import { extractSerialPoint, fileType } from './common'
 import { COLORS } from './utils'
@@ -231,6 +233,37 @@ const saveProject = async (s: IGraftState) => {
   }
 }
 
+const saveImportTemplate = async (
+  s: { col: number; variable: Variables; color: Colors; active: boolean }[]
+) => {
+  let notification: { message: string; variant: 'success' | 'error' } = {
+    message: '',
+    variant: 'success',
+  }
+  try {
+    const p = await save({
+      title: 'Save Import Template',
+      filters: [{ name: 'Import Template', extensions: ['graftImpTemp'] }],
+    })
+
+    const store = new Store(p)
+    await store.set('template', s)
+    await store.save()
+    notification = {
+      message: 'Template saved successfully',
+      variant: 'success',
+    }
+  } catch (err) {
+    console.log(err)
+    notification = {
+      message: 'Template not saved. Error occurred while saving',
+      variant: 'error',
+    }
+  } finally {
+    return notification
+  }
+}
+
 export {
   readFilesUsingTauriProcess,
   initStorage,
@@ -241,4 +274,5 @@ export {
   readAllFiles,
   readFileContents,
   Utf8ArrayToStr,
+  saveImportTemplate,
 }
