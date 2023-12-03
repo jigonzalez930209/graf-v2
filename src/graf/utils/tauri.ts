@@ -233,9 +233,17 @@ const saveProject = async (s: IGraftState) => {
   }
 }
 
-const saveImportTemplate = async (
-  s: { col: number; variable: Variables; color: Colors; active: boolean }[]
-) => {
+type Template = {
+  columns: {
+    col: number
+    variable: Variables
+    color: Colors
+    active: boolean
+  }[]
+  row: number
+}
+
+const saveImportTemplate = async (props: Template) => {
   let notification: { message: string; variant: 'success' | 'error' } = {
     message: '',
     variant: 'success',
@@ -247,7 +255,7 @@ const saveImportTemplate = async (
     })
 
     const store = new Store(p)
-    await store.set('template', s)
+    await store.set('template', props)
     await store.save()
     notification = {
       message: 'Template saved successfully',
@@ -264,6 +272,38 @@ const saveImportTemplate = async (
   }
 }
 
+const openImportTemplate = async () => {
+  let notification: { message: string; variant: 'success' | 'error' }
+  let data: Template
+  try {
+    const p = await open({
+      title: 'Open Import Template',
+      multiple: false,
+      directory: false,
+      filters: [{ name: 'Import Template', extensions: ['graftImpTemp'] }],
+    })
+
+    const store = new Store(p.path)
+
+    data = await store
+      .get('template')
+      .then((d) => d as Template)
+      .catch((err) => err)
+    notification = {
+      message: 'Template opened successfully',
+      variant: 'success',
+    }
+  } catch (err) {
+    console.log(err)
+    notification = {
+      message: 'Template not saved. Error occurred while saving',
+      variant: 'error',
+    }
+  } finally {
+    return { data, notification }
+  }
+}
+
 export {
   readFilesUsingTauriProcess,
   initStorage,
@@ -275,4 +315,5 @@ export {
   readFileContents,
   Utf8ArrayToStr,
   saveImportTemplate,
+  openImportTemplate,
 }
