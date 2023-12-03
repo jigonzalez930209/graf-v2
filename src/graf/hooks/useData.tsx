@@ -19,6 +19,7 @@ export const useData = () => {
     updateFile,
     updateCSVfileColumn,
     setSelectedFilesCount,
+    addFiles,
   } = React.useContext(GrafContext)
 
   const setData = (payload: ProcessFile[]) => {
@@ -46,6 +47,33 @@ export const useData = () => {
       setFiles(payload)
     } else {
       setFiles([])
+    }
+  }
+  const addFilesToState = (payload: ProcessFile[]) => {
+    setColumns([])
+    setSelectedFilesCount(0)
+    if (payload?.length > 0) {
+      let columns: csvFileColum[] = []
+      payload.forEach((file) => {
+        if (file.type === 'csv') {
+          columns.push({
+            id: file.id,
+            fileName: file.name,
+            selected: file.selected,
+            notSelected: file.csv.columns.map((name, index) => ({
+              name,
+              index,
+            })),
+            x: [],
+            y: [],
+            y2: [],
+          })
+        }
+      })
+      setColumns(columns)
+      addFiles(payload)
+    } else {
+      addFiles([])
     }
   }
 
@@ -397,5 +425,6 @@ export const useData = () => {
     exportVoltammeterDataToExcel,
     updateFileContent,
     cleanSelectionFiles,
+    addFiles: addFilesToState,
   }
 }
