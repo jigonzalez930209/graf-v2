@@ -8,14 +8,14 @@ import {
   PopoverArrow,
   PopoverContent,
   PopoverTrigger,
-} from '../ui/popover'
-import { Switch } from '../ui/switch'
-import CustomTooltip from '../ui/tooltip'
+} from '../../ui/popover'
+import { Switch } from '../../ui/switch'
+import CustomTooltip from '../../ui/tooltip'
 import {
   Colors,
   SelectionFooterProps,
   Variables,
-} from './import-dialog-interfaces'
+} from '../import-dialog-interfaces'
 
 const baseColors = {
   module: 'blue' as Colors,
@@ -72,7 +72,7 @@ const SelectionFooter = (props: SelectionFooterProps) => {
           <Popover open={open}>
             <PopoverTrigger onClick={() => setOpen((prev) => !prev)}>
               <CustomTooltip
-                title='Settings'
+                title='Variables selection'
                 Icon={<MousePointerSquareIcon className='h-5 w-5' />}
               />
             </PopoverTrigger>
