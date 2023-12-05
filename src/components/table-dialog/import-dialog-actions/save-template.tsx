@@ -1,0 +1,34 @@
+import * as React from 'react'
+import { saveImportTemplate } from '@/graf/utils/tauri'
+import { SaveIcon } from 'lucide-react'
+import { enqueueSnackbar } from 'notistack'
+
+import { Button } from '@/components/ui/button'
+
+const SaveTemplate = ({ setLoading, columns, selected }) => {
+  const handleClickSaveFileTemplate = React.useCallback(async () => {
+    setLoading(true)
+    const notification = await saveImportTemplate({
+      columns,
+      row: selected.row || 0,
+    })
+    enqueueSnackbar(notification.message, { variant: notification.variant })
+    setLoading(false)
+  }, [columns])
+
+  return (
+    <>
+      <Button
+        onClick={handleClickSaveFileTemplate}
+        className='h-6 w-6 rounded-full'
+        variant='ghost'
+        size='icon'
+        disabled={columns.length < 2}
+      >
+        <SaveIcon className='h-4 w-4' />
+      </Button>
+    </>
+  )
+}
+
+export default SaveTemplate

@@ -18,6 +18,10 @@ import {
   DialogTrigger,
 } from '../ui/dialog'
 import ExcelTable from './excel-table'
+import ImportFile from './import-dialog-actions/import-file'
+import OpenTemplate from './import-dialog-actions/open-template'
+import SaveTemplate from './import-dialog-actions/save-template'
+import SelectionFooter from './import-dialog-actions/selection-footer'
 import {
   Colors,
   CurrentSelected,
@@ -25,7 +29,6 @@ import {
   ExcelTableSelected,
   Variables,
 } from './import-dialog-interfaces'
-import SelectionFooter from './selection-footer'
 
 // TODO: Fix selections errors when importing data from template file and separate in different components for each button action
 
@@ -35,7 +38,6 @@ const ImportDialog = ({ children }) => {
   const [data, setData] = useState<ExcelTableData>()
   const [selected, setSelected] = useState<ExcelTableSelected>()
   const [open, setOpen] = useState(false)
-  const inputRefImportFile = React.useRef<HTMLInputElement>(null)
   const [columns, setColumns] = useState<
     { col: number; variable: Variables; color: Colors; active: boolean }[]
   >([])
@@ -52,74 +54,6 @@ const ImportDialog = ({ children }) => {
     signalAmplitude: 0,
     totalPoints: 0,
   })
-
-  const handleClickOpenFile = () => inputRefImportFile.current.click()
-
-  const handleImportClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true)
-    setData(null)
-    setSelected(null)
-    setColumns([])
-    const file = event.target.files?.[0]
-    if (!file) {
-      return
-    }
-
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      setParams((prev) => ({ ...prev, name: file.name }))
-      const fileName = file.name.toLocaleLowerCase()
-      const binaryString = event.target?.result as string
-      if (fileName.endsWith('.csv')) {
-        const workbook = XLSX.read(
-          binaryString,
-
-          {
-            type: 'binary',
-          }
-        )
-        const sheetName = workbook.SheetNames[0]
-        const worksheet = workbook.Sheets[sheetName]
-        const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
-
-        setData(homogenizeMatrix(data, ''))
-      } else if (fileName.endsWith('.txt')) {
-        const workbook = XLSX.read(
-          binaryString
-            // eliminate all \r\n and replace all spaces with tabs
-            .replace(/\r\n/g, '\n')
-            // Eliminate all spaces before a any letter except number and replace with ''
-            .replace(/ (\D)/g, '$1')
-            // Eliminate all \t\r\f\v,;:"' and replace with \t
-            .replace(/[ \t\r\f\v,;:"']+/g, '\t'),
-          {
-            type: 'binary',
-            FS: '\t',
-          }
-        )
-        const sheetName = workbook.SheetNames[0]
-        const worksheet = workbook.Sheets[sheetName]
-        const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
-
-        setData(homogenizeMatrix(data, ''))
-      } else if (
-        fileName.toLocaleLowerCase().endsWith('.xls') ||
-        fileName.endsWith('.xlsx')
-      ) {
-        const workbook = XLSX.read(binaryString, { type: 'binary' })
-        const sheetName = workbook.SheetNames[0]
-        const worksheet = workbook.Sheets[sheetName]
-        const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
-
-        setData(homogenizeMatrix(data, ''))
-      } else {
-        enqueueSnackbar('File type not supported', { variant: 'error' })
-      }
-    }
-    reader.readAsBinaryString(file)
-    event.target.value = null
-    setLoading(false)
-  }
 
   const handleSelect = (currentSelected: CurrentSelected, isClean = false) => {
     if (isClean) {
@@ -193,64 +127,30 @@ const ImportDialog = ({ children }) => {
     }
   }
 
-  const handleOpenImportTemplate = React.useCallback(async () => {
-    setLoading(true)
-    const template = await openImportTemplate()
-    setColumns(template.data.columns)
-    setSelected((prev) => ({ ...prev, row: template.data.row }))
-    enqueueSnackbar(template.notification.message, {
-      variant: template.notification.variant,
-    })
-    setLoading(false)
-  }, [])
-
-  const handleClickSaveFileTemplate = React.useCallback(async () => {
-    setLoading(true)
-    const notification = await saveImportTemplate({
-      columns,
-      row: selected.row || 0,
-    })
-    enqueueSnackbar(notification.message, { variant: notification.variant })
-    setLoading(false)
-  }, [columns])
-
   return (
     <Dialog open={open} onOpenChange={(o) => setOpen(o)}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className='absolute flex h-[95%] max-w-[95%] flex-col gap-0 overflow-y-auto overflow-x-hidden'>
         <DialogTitle className='flex items-center gap-10'>
           Import Data From Text File
-          <Button
-            onClick={handleClickOpenFile}
-            className='h-6 w-6 rounded-full'
-            variant='ghost'
-            size='icon'
-          >
-            <Import className='h-4 w-4' />
-          </Button>
-          <input
-            ref={inputRefImportFile}
-            style={{ display: 'none' }}
-            type='file'
-            onChange={handleImportClick}
+          <ImportFile
+            setColumns={setColumns}
+            setData={setData}
+            setSelected={setSelected}
+            setParams={setParams}
+            setLoading={setLoading}
           />
-          <Button
-            onClick={handleClickSaveFileTemplate}
-            className='h-6 w-6 rounded-full'
-            variant='ghost'
-            size='icon'
-            disabled={columns.length < 2}
-          >
-            <SaveIcon className='h-4 w-4' />
-          </Button>
-          <Button
-            onClick={handleOpenImportTemplate}
-            className='h-6 w-6 rounded-full'
-            variant='ghost'
-            size='icon'
-          >
-            <FolderOpenIcon className='h-4 w-4' />
-          </Button>
+          <SaveTemplate
+            columns={columns}
+            selected={selected}
+            setLoading={setLoading}
+          />
+          <OpenTemplate
+            setColumns={setColumns}
+            setSelected={setSelected}
+            setLoading={setLoading}
+            data={data}
+          />
         </DialogTitle>
 
         {data?.length && (
