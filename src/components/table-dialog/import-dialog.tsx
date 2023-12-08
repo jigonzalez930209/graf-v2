@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog'
+import { handleImport } from './dialog-table-utils'
 import ExcelTable from './excel-table'
 import ImportFile from './import-dialog-actions/import-file'
 import OpenTemplate from './import-dialog-actions/open-template'
@@ -70,63 +71,6 @@ const ImportDialog = ({ children }) => {
     )
   }
 
-  const handleImport = () => {
-    setLoading(true)
-    try {
-      const index = {
-        frequency: columns.find((c) => c.variable === 'frequency').col - 1,
-        module: columns.find((c) => c.variable === 'module')?.col - 1,
-        phase: columns.find((c) => c.variable === 'phase')?.col - 1,
-        zr: columns.find((c) => c.variable === 'zr')?.col - 1,
-        zi: columns.find((c) => c.variable === 'zi')?.col - 1,
-      }
-
-      const sortData =
-        selected.row > 0
-          ? data
-              .filter((_, i) => i >= selected?.row)
-              .map((row) => [
-                '',
-                row[index.frequency],
-                Number.isNaN(index.module)
-                  ? Math.sqrt(row[index.zi] ** 2 + row[index.zr] ** 2)
-                  : row[index.module],
-                Number.isNaN(index.phase)
-                  ? -Math.atan(row[index.zi] / row[index.zr]) * (180 / Math.PI)
-                  : row[index.phase],
-              ])
-          : data.map((row) => [
-              '',
-              row[index.frequency],
-              Number.isNaN(index.module)
-                ? Math.sqrt(row[index.zi] ** 2 + row[index.zr] ** 2)
-                : row[index.module],
-              Number.isNaN(index.phase)
-                ? -Math.atan(row[index.zi] / row[index.zr]) * (180 / Math.PI)
-                : row[index.phase],
-            ])
-
-      const currentParams = { ...params }
-      delete currentParams.name
-      importDataTeq4Z({
-        name: params.name,
-        impParams: {
-          ...currentParams,
-          eFrequency: Math.max(...sortData.map((s) => s[1])),
-          sFrequency: Math.min(...sortData.map((s) => s[1])),
-          totalPoints: sortData.length,
-        },
-        content: sortData,
-      })
-      setOpen(false)
-    } catch (e) {
-      enqueueSnackbar('Something went wrong' + e, { variant: 'error' })
-      console.log(e)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <Dialog open={open} onOpenChange={(o) => setOpen(o)}>
       <DialogTrigger>{children}</DialogTrigger>
@@ -172,7 +116,18 @@ const ImportDialog = ({ children }) => {
             <Button
               variant='default'
               disabled={columns.length < 3}
-              onClick={handleImport}
+              onClick={() =>
+                handleImport({
+                  columns,
+                  data,
+                  params,
+                  importDataTeq4Z,
+                  enqueueSnackbar,
+                  setLoading,
+                  setOpen,
+                  selected,
+                })
+              }
             >
               Import
             </Button>
