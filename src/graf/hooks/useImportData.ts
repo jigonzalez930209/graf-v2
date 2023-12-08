@@ -4,7 +4,7 @@ import { GrafContext } from '../context/GraftContext'
 import { ProcessFile } from '../interfaces/interfaces'
 import { generateRandomId } from '../utils/common'
 
-type ImportData = {
+export type ImportData = {
   name: string
   content: ProcessFile['content']
   color?: string
