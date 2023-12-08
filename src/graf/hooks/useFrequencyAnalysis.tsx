@@ -9,6 +9,7 @@ import {
 import { GrafContext } from '../context/GraftContext'
 import { FrequencyValues, SortedByFrequency } from '../interfaces/interfaces'
 
+// TODO: Fix concurrence frequency values to calculate the linear regression (throw error when the files have different frequency range)
 const useFrequencyAnalysis = () => {
   const {
     graftState: { files, concInputValues },
