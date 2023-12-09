@@ -5,7 +5,13 @@ import { ProcessFile } from '@/graf/interfaces/interfaces'
 import { homogenizeMatrix } from '@/graf/utils/common'
 import { openImportTemplate, saveImportTemplate } from '@/graf/utils/tauri'
 import _ from 'lodash'
-import { FolderOpenIcon, Import, SaveIcon } from 'lucide-react'
+import {
+  FolderOpenIcon,
+  FolderUpIcon,
+  Import,
+  LayoutTemplate,
+  SaveIcon,
+} from 'lucide-react'
 import { useSnackbar } from 'notistack'
 import * as XLSX from 'xlsx'
 
@@ -17,6 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog'
+import CustomTooltip from '../ui/tooltip'
 import { handleImport } from './dialog-table-utils'
 import ExcelTable from './excel-table'
 import ImportFile from './import-dialog-actions/import-file'
@@ -33,7 +40,7 @@ import {
 
 // TODO: Fix selections errors when importing data from template file and separate in different components for each button action
 
-const ImportDialog = ({ children }) => {
+const ImportDialog = () => {
   const { importDataTeq4Z } = useImportData()
   const { setLoading } = React.useContext(LoadingsContext)
   const [data, setData] = useState<ExcelTableData>()
@@ -73,7 +80,12 @@ const ImportDialog = ({ children }) => {
 
   return (
     <Dialog open={open} onOpenChange={(o) => setOpen(o)}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger>
+        <CustomTooltip
+          title='Make a new import template'
+          Icon={<LayoutTemplate className='h-5 w-5' />}
+        />
+      </DialogTrigger>
       <DialogContent className='absolute flex h-[95%] max-w-[95%] flex-col gap-0 overflow-y-auto overflow-x-hidden'>
         <DialogTitle className='flex items-center gap-10'>
           Import Data From Text File

@@ -41,7 +41,7 @@ const Card = ({ onSelect, className, content }) => {
 
 const SelectionFooter = (props: SelectionFooterProps) => {
   const { selected, handleSelect } = props
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = React.useState(false)
   const [currentSelect, setCurrentSelect] = React.useState<Variables>(null)
 
   const [isModulePhase, setIsModulePhase] = React.useState(true)

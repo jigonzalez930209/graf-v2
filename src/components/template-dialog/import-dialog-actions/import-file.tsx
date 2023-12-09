@@ -31,13 +31,9 @@ const ImportFile = ({
       const fileName = file.name.toLocaleLowerCase()
       const binaryString = event.target?.result as string
       if (fileName.endsWith('.csv')) {
-        const workbook = XLSX.read(
-          binaryString,
-
-          {
-            type: 'binary',
-          }
-        )
+        const workbook = XLSX.read(binaryString, {
+          type: 'binary',
+        })
         const sheetName = workbook.SheetNames[0]
         const worksheet = workbook.Sheets[sheetName]
         const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
