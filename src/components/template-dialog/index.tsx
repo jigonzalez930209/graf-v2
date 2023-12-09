@@ -1,6 +1,6 @@
 export { default } from './import-dialog'
 
-export { default as SelectionFooter } from './import-dialog-actions/selection-footer'
+export { default as SelectionFooter } from './template-dialog-actions/selection-footer'
 export { default as ExcelTable } from './excel-table'
 export {
   type Colors,

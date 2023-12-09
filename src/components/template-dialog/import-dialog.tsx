@@ -26,10 +26,6 @@ import {
 import CustomTooltip from '../ui/tooltip'
 import { handleImport } from './dialog-table-utils'
 import ExcelTable from './excel-table'
-import ImportFile from './import-dialog-actions/import-file'
-import OpenTemplate from './import-dialog-actions/open-template'
-import SaveTemplate from './import-dialog-actions/save-template'
-import SelectionFooter from './import-dialog-actions/selection-footer'
 import {
   Colors,
   CurrentSelected,
@@ -37,6 +33,10 @@ import {
   ExcelTableSelected,
   Variables,
 } from './import-dialog-interfaces'
+import ImportFile from './template-dialog-actions/import-file'
+import OpenTemplate from './template-dialog-actions/open-template'
+import SaveTemplate from './template-dialog-actions/save-template'
+import SelectionFooter from './template-dialog-actions/selection-footer'
 
 // TODO: Fix selections errors when importing data from template file and separate in different components for each button action
 
