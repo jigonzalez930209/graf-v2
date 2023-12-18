@@ -11,4 +11,4 @@ export {
   type ExcelTableSelected,
   type SelectionFooterProps,
   type Variables,
-} from './import-dialog-interfaces'
+} from '@/graf/utils/import-dialog-interfaces'
