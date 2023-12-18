@@ -1,8 +1,11 @@
 import { ImportData } from '@/graf/hooks/useImportData'
 import { ProcessFile } from '@/graf/interfaces/interfaces'
+import {
+  Colors,
+  ExcelTableData,
+  Variables,
+} from '@/graf/utils/import-dialog-interfaces'
 import { EnqueueSnackbar } from 'notistack'
-
-import { Colors, ExcelTableData, Variables } from './import-dialog-interfaces'
 
 type HandleImportProps = {
   columns: {

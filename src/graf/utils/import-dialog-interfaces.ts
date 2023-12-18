@@ -38,3 +38,19 @@ export type CurrentSelected = {
   color: Colors
   active: boolean
 }
+
+export type Template = {
+  columns: {
+    col: number
+    variable: Variables
+    color: Colors
+    active: boolean
+  }[]
+  row: number
+}
+
+export type TemplateFile = {
+  name: string
+  template: Template
+  notification: { message: string; variant: 'success' | 'error' }
+}
