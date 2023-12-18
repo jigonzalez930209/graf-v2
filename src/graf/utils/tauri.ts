@@ -1,10 +1,14 @@
+import {
+  Colors,
+  Template,
+  TemplateFile,
+  Variables,
+} from '@/graf/utils/import-dialog-interfaces'
 import { open, save } from '@tauri-apps/plugin-dialog'
 import { metadata, readBinaryFile } from '@tauri-apps/plugin-fs'
 import { Store } from '@tauri-apps/plugin-store'
 import _ from 'lodash'
 import { read, utils, write } from 'xlsx'
-
-import { Colors, Variables } from '@/components/table-dialog'
 
 import { IGraftState, ProcessFile } from '../interfaces/interfaces'
 import { extractSerialPoint, fileType } from './common'
@@ -233,16 +237,6 @@ const saveProject = async (s: IGraftState) => {
   }
 }
 
-type Template = {
-  columns: {
-    col: number
-    variable: Variables
-    color: Colors
-    active: boolean
-  }[]
-  row: number
-}
-
 const saveImportTemplate = async (props: Template) => {
   let notification: { message: string; variant: 'success' | 'error' } = {
     message: '',
@@ -304,6 +298,49 @@ const openImportTemplate = async () => {
   }
 }
 
+const openImportTemplates = async () => {
+  let notification: { message: string; variant: 'success' | 'error' }
+  let data: TemplateFile[] = []
+  try {
+    const p = await open({
+      title: 'Open Import Template',
+      multiple: true,
+      directory: false,
+      filters: [{ name: 'Import Template', extensions: ['graftImpTemp'] }],
+    })
+
+    for (const file of p) {
+      const store = new Store(file.path)
+
+      const template = await store.get('template').then(
+        (d) =>
+          ({
+            name: file.name,
+            template: d as Template,
+            notification: {
+              message: 'Template opened successfully',
+              variant: 'success',
+            },
+          }) as TemplateFile
+      )
+
+      data.push(template)
+    }
+    notification = {
+      message: 'Template opened successfully',
+      variant: 'success',
+    }
+  } catch (err) {
+    console.log(err)
+    notification = {
+      message: 'Template not saved. Error occurred while saving',
+      variant: 'error',
+    }
+  } finally {
+    return { data, notification }
+  }
+}
+
 export {
   readFilesUsingTauriProcess,
   initStorage,
@@ -316,4 +353,5 @@ export {
   Utf8ArrayToStr,
   saveImportTemplate,
   openImportTemplate,
+  openImportTemplates,
 }
