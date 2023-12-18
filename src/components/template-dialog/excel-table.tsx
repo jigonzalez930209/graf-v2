@@ -8,7 +8,7 @@ import tinycolor from 'tinycolor2'
 
 import 'handsontable/dist/handsontable.full.min.css'
 
-import { ExcelTableProps } from './import-dialog-interfaces'
+import { ExcelTableProps } from '@/graf/utils/import-dialog-interfaces'
 
 registerAllModules()
 
