@@ -27,6 +27,7 @@ import ProjectHandler from '../app-bar/project-handler'
 import { Settings } from '../app-bar/settings'
 import ExportModal from '../export-dialog'
 import FrequencyAnalysisDialog from '../frequency-analysis/frequency-analysis-dialog'
+import ImportFile from '../import-dialog'
 import ImportDialog from '../template-dialog/import-dialog'
 import { Dialog, DialogTrigger } from '../ui/dialog'
 import CustomTooltip from '../ui/tooltip'
@@ -103,6 +104,7 @@ export function Menu() {
 
         <FrequencyAnalysisDialog />
         <ImportDialog />
+        <ImportFile />
       </div>
     </Menubar>
   )
