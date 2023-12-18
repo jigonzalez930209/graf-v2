@@ -1,4 +1,9 @@
 import React from 'react'
+import {
+  Colors,
+  SelectionFooterProps,
+  Variables,
+} from '@/graf/utils/import-dialog-interfaces'
 import { MousePointerSquareIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -11,11 +16,6 @@ import {
 } from '../../ui/popover'
 import { Switch } from '../../ui/switch'
 import CustomTooltip from '../../ui/tooltip'
-import {
-  Colors,
-  SelectionFooterProps,
-  Variables,
-} from '../import-dialog-interfaces'
 
 const baseColors = {
   module: 'blue' as Colors,
