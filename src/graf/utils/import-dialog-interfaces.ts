@@ -1,3 +1,4 @@
+import React from 'react'
 import { CellValue, RowObject } from 'handsontable/common'
 
 export type ExcelTableData =
@@ -26,10 +27,12 @@ export type ExcelTableProps = {
 }
 
 export type Variables = 'module' | 'phase' | 'frequency' | 'zi' | 'zr'
-export type Colors = 'blue' | 'green' | 'red' | 'yellow' | 'purple'
+export type Colors = 'blue' | 'green' | 'red' | 'orange' | 'purple'
 
 export type SelectionFooterProps = {
   selected: { row: number; col: number }
+  isModulePhase: boolean
+  setIsModulePhase: React.Dispatch<React.SetStateAction<boolean>>
   handleSelect: (currentSelected: CurrentSelected, isClean?: boolean) => void
 }
 
@@ -47,6 +50,7 @@ export type Template = {
     active: boolean
   }[]
   row: number
+  isModulePhase: boolean
 }
 
 export type TemplateFile = {

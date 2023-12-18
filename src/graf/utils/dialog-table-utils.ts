@@ -20,7 +20,7 @@ type HandleImportProps = {
   }
   data: ExcelTableData
   setLoading: (loading: boolean) => void
-  setOpen: (open: boolean) => void
+  setOpen?: (open: boolean) => void
   params: ProcessFile['impedance'] & { name: string }
   importDataTeq4Z: (d: ImportData) => void
   enqueueSnackbar: EnqueueSnackbar
@@ -35,7 +35,7 @@ const handleImport = ({
   params,
   setOpen,
   enqueueSnackbar,
-}: HandleImportProps) => {
+}: HandleImportProps): boolean => {
   setLoading(true)
   try {
     const index = {
@@ -83,12 +83,14 @@ const handleImport = ({
       },
       content: sortData,
     })
-    setOpen(false)
+    setOpen?.(false)
+    setLoading(false)
+    return true
   } catch (e) {
     enqueueSnackbar('Something went wrong' + e, { variant: 'error' })
     console.log(e)
-  } finally {
     setLoading(false)
+    return false
   }
 }
 

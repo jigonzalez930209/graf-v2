@@ -1,16 +1,33 @@
 import * as React from 'react'
+import {
+  ExcelTableSelected,
+  Template,
+} from '@/graf/utils/import-dialog-interfaces'
 import { saveImportTemplate } from '@/graf/utils/tauri'
 import { SaveIcon } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
 
 import { Button } from '@/components/ui/button'
 
-const SaveTemplate = ({ setLoading, columns, selected }) => {
+type SaveTemplateProps = {
+  setLoading: (boolean) => void
+  columns: Template['columns']
+  selected: ExcelTableSelected
+  isModulePhase: boolean
+}
+
+const SaveTemplate = ({
+  setLoading,
+  columns,
+  selected,
+  isModulePhase,
+}: SaveTemplateProps) => {
   const handleClickSaveFileTemplate = React.useCallback(async () => {
     setLoading(true)
     const notification = await saveImportTemplate({
       columns,
       row: selected.row || 0,
+      isModulePhase,
     })
     enqueueSnackbar(notification.message, { variant: notification.variant })
     setLoading(false)

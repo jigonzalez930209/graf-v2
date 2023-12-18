@@ -2,18 +2,17 @@ import React, { useState } from 'react'
 import { LoadingsContext } from '@/graf/context/Loading'
 import useImportData from '@/graf/hooks/useImportData'
 import { ProcessFile } from '@/graf/interfaces/interfaces'
-import { homogenizeMatrix } from '@/graf/utils/common'
-import { openImportTemplate, saveImportTemplate } from '@/graf/utils/tauri'
-import _ from 'lodash'
+import { handleImport } from '@/graf/utils/dialog-table-utils'
 import {
-  FolderOpenIcon,
-  FolderUpIcon,
-  Import,
-  LayoutTemplate,
-  SaveIcon,
-} from 'lucide-react'
+  Colors,
+  CurrentSelected,
+  ExcelTableData,
+  ExcelTableSelected,
+  Variables,
+} from '@/graf/utils/import-dialog-interfaces'
+import _ from 'lodash'
+import { LayoutTemplate } from 'lucide-react'
 import { useSnackbar } from 'notistack'
-import * as XLSX from 'xlsx'
 
 import { Button } from '../ui/button'
 import {
@@ -24,21 +23,13 @@ import {
   DialogTrigger,
 } from '../ui/dialog'
 import CustomTooltip from '../ui/tooltip'
-import { handleImport } from './dialog-table-utils'
 import ExcelTable from './excel-table'
-import {
-  Colors,
-  CurrentSelected,
-  ExcelTableData,
-  ExcelTableSelected,
-  Variables,
-} from './import-dialog-interfaces'
 import ImportFile from './template-dialog-actions/import-file'
 import OpenTemplate from './template-dialog-actions/open-template'
 import SaveTemplate from './template-dialog-actions/save-template'
 import SelectionFooter from './template-dialog-actions/selection-footer'
 
-// TODO: Fix selections errors when importing data from template file and separate in different components for each button action
+// TODO: Add params input
 
 const ImportDialog = () => {
   const { importDataTeq4Z } = useImportData()
@@ -49,6 +40,8 @@ const ImportDialog = () => {
   const [columns, setColumns] = useState<
     { col: number; variable: Variables; color: Colors; active: boolean }[]
   >([])
+
+  const [isModulePhase, setIsModulePhase] = React.useState(true)
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -90,37 +83,41 @@ const ImportDialog = () => {
         <DialogTitle className='flex items-center gap-10'>
           Import Data From Text File
           <ImportFile
-            setColumns={setColumns}
-            setData={setData}
-            setSelected={setSelected}
-            setParams={setParams}
-            setLoading={setLoading}
+            {...{
+              setColumns,
+              setData,
+              setSelected,
+              setParams,
+              setLoading,
+            }}
           />
           <SaveTemplate
-            columns={columns}
-            selected={selected}
-            setLoading={setLoading}
+            {...{
+              isModulePhase,
+              setIsModulePhase,
+              setLoading,
+              selected,
+              columns,
+            }}
           />
           <OpenTemplate
-            setColumns={setColumns}
-            setSelected={setSelected}
-            setLoading={setLoading}
-            data={data}
+            {...{
+              setColumns,
+              setSelected,
+              setLoading,
+              data,
+              setIsModulePhase,
+            }}
           />
         </DialogTitle>
 
         {data?.length && (
-          <ExcelTable
-            data={data}
-            setData={setData}
-            selected={selected}
-            columns={columns}
-            setSelected={setSelected}
-          />
+          <ExcelTable {...{ data, setData, selected, columns, setSelected }} />
         )}
         <DialogFooter className='relative bottom-0 right-0 mt-auto grid grid-cols-6 items-center justify-between'>
-          <SelectionFooter selected={selected} handleSelect={handleSelect} />
-          {/* TODO: Add params input */}
+          <SelectionFooter
+            {...{ selected, handleSelect, isModulePhase, setIsModulePhase }}
+          />
           <div className='flex justify-end gap-3'>
             <Button variant='destructive' onClick={() => setOpen(false)}>
               Cancel

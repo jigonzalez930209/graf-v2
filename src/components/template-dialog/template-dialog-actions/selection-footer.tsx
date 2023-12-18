@@ -21,7 +21,7 @@ const baseColors = {
   module: 'blue' as Colors,
   phase: 'green' as Colors,
   frequency: 'red' as Colors,
-  zi: 'yellow' as Colors,
+  zi: 'orange' as Colors,
   zr: 'purple' as Colors,
 }
 const Card = ({ onSelect, className, content }) => {
@@ -40,11 +40,9 @@ const Card = ({ onSelect, className, content }) => {
 }
 
 const SelectionFooter = (props: SelectionFooterProps) => {
-  const { selected, handleSelect } = props
+  const { selected, handleSelect, isModulePhase, setIsModulePhase } = props
   const [open, setOpen] = React.useState(false)
   const [currentSelect, setCurrentSelect] = React.useState<Variables>(null)
-
-  const [isModulePhase, setIsModulePhase] = React.useState(true)
 
   const handleSelectChange = (e: Variables) => {
     setCurrentSelect(e)
@@ -79,7 +77,7 @@ const SelectionFooter = (props: SelectionFooterProps) => {
             <PopoverContent className='h-auto w-auto bg-secondary'>
               <div className='w-full items-center justify-center gap-5'>
                 <div>
-                  Please pick one variable and click on the column to select it.
+                  Please pick one column and click on the variable to select it.
                 </div>
                 <div>
                   <label className='grid grid-cols-2 items-center gap-2'>
@@ -143,9 +141,9 @@ const SelectionFooter = (props: SelectionFooterProps) => {
                       content='Zi'
                       onSelect={() => handleSelectChange('zi')}
                       className={cn(
-                        'bg-yellow-200 hover:bg-yellow-300 ',
+                        'bg-orange-200 hover:bg-orange-300 ',
                         currentSelect === 'zi' &&
-                          'border-4 border-dotted border-yellow-700 bg-yellow-400 text-white shadow-md shadow-yellow-300 hover:bg-yellow-500'
+                          'border-4 border-dotted border-orange-700 bg-orange-400 text-white shadow-md shadow-orange-300 hover:bg-orange-500'
                       )}
                     />
                   </>
