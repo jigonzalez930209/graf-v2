@@ -121,7 +121,7 @@ const ExcelTable = ({
           cells={(row, col) => {
             let cellProperties: any = {}
             if (row === selected?.row - 1) {
-              cellProperties.renderer = renderCellColors('orange')
+              cellProperties.renderer = renderCellColors('gray')
             }
             if (columns?.find((i) => i.col - 1 === col)) {
               cellProperties.renderer = renderCellColors(
