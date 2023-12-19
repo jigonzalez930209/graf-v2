@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import * as Popover from '@radix-ui/react-popover'
 import { getName, getVersion } from '@tauri-apps/plugin-app'
 import { SettingsIcon } from 'lucide-react'
 
@@ -16,7 +15,8 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar'
 import {
-  Popover as CustomPopover,
+  Popover,
+  PopoverArrow,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
@@ -27,6 +27,8 @@ import ProjectHandler from '../app-bar/project-handler'
 import { Settings } from '../app-bar/settings'
 import ExportModal from '../export-dialog'
 import FrequencyAnalysisDialog from '../frequency-analysis/frequency-analysis-dialog'
+import ImportFile from '../import-dialog'
+import ImportDialog from '../template-dialog/import-dialog'
 import { Dialog, DialogTrigger } from '../ui/dialog'
 import CustomTooltip from '../ui/tooltip'
 import { MenuModeToggle } from './menu-mode-toggle'
@@ -55,17 +57,6 @@ export function Menu() {
 
   return (
     <Menubar className='z-50 w-full rounded-none border-b border-none pl-2 lg:pl-3'>
-      {/* <MenubarMenu>
-        <CustomTooltip
-          title='Graf is a tool for creating and managing graphs.'
-          Icon={
-            <div className='inline-flex h-fit w-fit items-center text-cyan-500'>
-              <AreaChartIcon className='h-5 w-5' />
-            </div>
-          }
-        />
-      </MenubarMenu> */}
-
       <MenubarMenu>
         <MenubarTrigger className='mx-auto min-w-max font-bold capitalize hover:bg-secondary'>
           {name}
@@ -77,19 +68,10 @@ export function Menu() {
             </DialogTrigger>
 
             <MenubarSeparator />
-            <MenubarItem>
-              Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
-            </MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem>
-              Hide Music... <MenubarShortcut>⌘H</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem>
-              Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
-            </MenubarItem>
             <MenubarShortcut />
             <MenubarItem onClick={closeWindow}>
-              Quit Music <MenubarShortcut>⌘Q</MenubarShortcut>
+              Quit
+              {/* <MenubarShortcut >⌘Q</MenubarShortcut> */}
             </MenubarItem>
           </MenubarContent>
           <AboutDialog />
@@ -98,19 +80,8 @@ export function Menu() {
       <ProjectMenu />
 
       <MenuModeToggle />
-      <div className='flex w-full justify-center gap-3 pl-4 '>
-        {/* <CustomPopover>
-        <PopoverTrigger>
-          <Button className='uppercase' variant='ghost'>
-            Project
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className=' bg-secondary'>
-          <Project />
-          <Popover.Arrow className='fill-primary' />
-        </PopoverContent>
-      </CustomPopover> */}
-        <CustomPopover>
+      <div className='flex w-full justify-center gap-3 pl-4'>
+        <Popover>
           <PopoverTrigger>
             <CustomTooltip
               title='Settings'
@@ -119,9 +90,9 @@ export function Menu() {
           </PopoverTrigger>
           <PopoverContent className='h-auto w-auto bg-secondary'>
             <Settings />
-            <Popover.Arrow className='fill-primary' />
+            <PopoverArrow className='fill-primary' />
           </PopoverContent>
-        </CustomPopover>
+        </Popover>
         <ProjectHandler />
         {!['csv', null].includes(fileType) && (
           <ExportModal>
@@ -132,6 +103,8 @@ export function Menu() {
         )}
 
         <FrequencyAnalysisDialog />
+        <ImportDialog />
+        <ImportFile />
       </div>
     </Menubar>
   )

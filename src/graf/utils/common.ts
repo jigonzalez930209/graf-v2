@@ -38,7 +38,7 @@ const extractSerialPoint = (
         totalPoints: parseInt(arrayFile[105].split(',')[0]),
       }
       processFile.push({
-        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
+        id: generateRandomId(),
         type: 'teq4Z',
         name: element.name,
         color: COLORS[i],
@@ -60,7 +60,7 @@ const extractSerialPoint = (
       const totalTime = countX / samplesSec
 
       processFile.push({
-        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
+        id: generateRandomId(),
         color: COLORS[i],
         type: 'teq4',
         name: element.name,
@@ -76,7 +76,7 @@ const extractSerialPoint = (
       })
     } else if (fileType(element.name) === 'csv') {
       processFile.push({
-        id: (+new Date() * Math.random()).toString(36).substring(0, 6),
+        id: generateRandomId(),
         color: COLORS[i],
         type: 'csv',
         name: element.name,
@@ -101,7 +101,7 @@ const fileType = (fileName: string): string => {
   else return null
 }
 
-const exportExcelFrequency = ({
+const exportExcelFrequencyAnalysis = ({
   uniqueFrequencyCalc,
   concInputValues,
   fileName,
@@ -155,10 +155,31 @@ const exportExcelVoltametry = () => {
   throw new Error('Not Voltametry')
 }
 
+const homogenizeMatrix = (matrix, defaultValue) => {
+  // Get the maximum length of all rows
+  const maxLength = Math.max(...matrix.map((row) => row.length))
+
+  // Fill rows with blank values or the default value
+  const homogenizedMatrix = matrix.map((row) => {
+    // If the row is shorter than the maximum length, fill with blank values or the default value
+    while (row.length < maxLength) {
+      row.push(defaultValue)
+    }
+    return row
+  })
+
+  return homogenizedMatrix
+}
+
+const generateRandomId = () =>
+  (+new Date() * Math.random()).toString(36).substring(0, 6)
+
 export {
   fileType,
   extractSerialPoint,
-  exportExcelFrequency,
+  exportExcelFrequencyAnalysis as exportExcelFrequency,
   exportExcelImpedance,
   exportExcelVoltametry,
+  homogenizeMatrix,
+  generateRandomId,
 }

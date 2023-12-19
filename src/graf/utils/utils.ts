@@ -194,4 +194,12 @@ const COLUMNS_VOLTAMETER = ['Time', 'Voltage', 'Current']
 
 const IMPEDANCE_TYPE: IGraftImpedanceType[] = ['Bode', 'Nyquist', 'ZiZrVsFreq']
 
-export { COLORS, COLUMNS_IMPEDANCE, COLUMNS_VOLTAMETER, IMPEDANCE_TYPE }
+const IMPEDANCE_IMPORT_COLUMNS = ['Frequency', 'Module', 'Phase']
+
+export {
+  COLORS,
+  COLUMNS_IMPEDANCE,
+  COLUMNS_VOLTAMETER,
+  IMPEDANCE_TYPE,
+  IMPEDANCE_IMPORT_COLUMNS,
+}

@@ -2,7 +2,7 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:1420",
+    "devPath": "http://localhost:2023",
     "distDir": "../dist",
     "withGlobalTauri": false
   },
@@ -11,21 +11,28 @@
   },
   "tauri": {
     "bundle": {
+      "category": "Education",
+      "identifier": "com.graf-v2.dev",
+      "publisher": "jigonzalez930209",
       "active": true,
-      "category": "DeveloperTool",
       "copyright": "",
+      "resources": [],
+      "shortDescription": " ",
+      "appimage": {
+        "bundleMediaFramework": false
+      },
+      "targets": ["deb", "appimage", "nsis", "msi", "app", "dmg", "updater"],
+      "externalBin": [],
       "deb": {
         "depends": []
       },
-      "externalBin": [],
       "icon": [
         "icons/graph-icon16.ico",
         "icons/graph-icon32.ico",
         "icons/graph-icon64.ico",
         "icons/graph-icon128.ico",
-        "icons/icon.ico"
+        "icons/graph-icon128.ico"
       ],
-      "identifier": "com.graf-v2.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -34,10 +41,12 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
       "windows": {
+        "allowDowngrades": false,
+        "wix": {
+          "skipWebviewInstall": false,
+          "enableElevatedUpdateTask": true
+        },
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "webviewInstallMode": {
@@ -46,12 +55,16 @@
         },
         "timestampUrl": "",
         "nsis": {
-          "installerIcon": "./icons/icon.ico"
+          "installerIcon": "./icons/graph-icon128.ico"
         }
       }
     },
+    "pattern": {
+      "use": "brownfield"
+    },
+
     "security": {
-      "csp": null,
+      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'; connect-src ipc: http://ipc.localhost",
       "dangerousRemoteDomainIpcAccess": [
         {
           "scheme": "http",
@@ -75,13 +88,13 @@
       {
         "fullscreen": false,
         "title": "graf-v2",
-        "resizable": false,
-        "maximizable": false,
+        "resizable": true,
+        "maximizable": true,
         "decorations": true,
         "transparent": false,
         "fileDropEnabled": true,
         "maximized": true,
-        "contentProtected": true
+        "contentProtected": false
       }
     ]
   }

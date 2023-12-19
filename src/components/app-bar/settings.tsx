@@ -30,7 +30,7 @@ export const Settings = () => {
   } = React.useContext(GrafContext)
 
   return (
-    <ul className='one m-0 grid w-[600px] list-none gap-y-[20px] '>
+    <ul className='m-0 grid w-[600px] list-none gap-y-[20px]'>
       <li className='grid grid-cols-5 items-center gap-3 px-[22px]'>
         <Label className='col-span-2 align-top'>Line type</Label>
         <Select

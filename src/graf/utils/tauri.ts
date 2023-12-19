@@ -1,3 +1,9 @@
+import {
+  Colors,
+  Template,
+  TemplateFile,
+  Variables,
+} from '@/graf/utils/import-dialog-interfaces'
 import { open, save } from '@tauri-apps/plugin-dialog'
 import { metadata, readBinaryFile } from '@tauri-apps/plugin-fs'
 import { Store } from '@tauri-apps/plugin-store'
@@ -231,6 +237,110 @@ const saveProject = async (s: IGraftState) => {
   }
 }
 
+const saveImportTemplate = async (props: Template) => {
+  let notification: { message: string; variant: 'success' | 'error' } = {
+    message: '',
+    variant: 'success',
+  }
+  try {
+    const p = await save({
+      title: 'Save Import Template',
+      filters: [{ name: 'Import Template', extensions: ['graftImpTemp'] }],
+    })
+
+    const store = new Store(p)
+    await store.set('template', props)
+    await store.save()
+    notification = {
+      message: 'Template saved successfully',
+      variant: 'success',
+    }
+  } catch (err) {
+    console.log(err)
+    notification = {
+      message: 'Template not saved. Error occurred while saving',
+      variant: 'error',
+    }
+  } finally {
+    return notification
+  }
+}
+
+const openImportTemplate = async () => {
+  let notification: { message: string; variant: 'success' | 'error' }
+  let data: Template
+  try {
+    const p = await open({
+      title: 'Open Import Template',
+      multiple: false,
+      directory: false,
+      filters: [{ name: 'Import Template', extensions: ['graftImpTemp'] }],
+    })
+
+    const store = new Store(p.path)
+
+    data = await store
+      .get('template')
+      .then((d) => d as Template)
+      .catch((err) => err)
+    notification = {
+      message: 'Template opened successfully',
+      variant: 'success',
+    }
+  } catch (err) {
+    console.log(err)
+    notification = {
+      message: 'Template not saved. Error occurred while saving',
+      variant: 'error',
+    }
+  } finally {
+    return { data, notification }
+  }
+}
+
+const openImportTemplates = async () => {
+  let notification: { message: string; variant: 'success' | 'error' }
+  let data: TemplateFile[] = []
+  try {
+    const p = await open({
+      title: 'Open Import Template',
+      multiple: true,
+      directory: false,
+      filters: [{ name: 'Import Template', extensions: ['graftImpTemp'] }],
+    })
+
+    for (const file of p) {
+      const store = new Store(file.path)
+
+      const template = await store.get('template').then(
+        (d) =>
+          ({
+            name: file.name,
+            template: d as Template,
+            notification: {
+              message: 'Template opened successfully',
+              variant: 'success',
+            },
+          }) as TemplateFile
+      )
+
+      data.push(template)
+    }
+    notification = {
+      message: 'Template opened successfully',
+      variant: 'success',
+    }
+  } catch (err) {
+    console.log(err)
+    notification = {
+      message: 'Template not saved. Error occurred while saving',
+      variant: 'error',
+    }
+  } finally {
+    return { data, notification }
+  }
+}
+
 export {
   readFilesUsingTauriProcess,
   initStorage,
@@ -241,4 +351,7 @@ export {
   readAllFiles,
   readFileContents,
   Utf8ArrayToStr,
+  saveImportTemplate,
+  openImportTemplate,
+  openImportTemplates,
 }

@@ -33,6 +33,8 @@ type GraftAction = {
     | 'setSelectedFilesCount'
     | 'setCalcToUniqueFrequency'
     | 'setSelectFilesToCalcUniqueFrequency'
+    | 'setFile'
+    | 'addFiles'
   payload:
     | INotification
     | IFileType
@@ -169,6 +171,20 @@ export const graftReducer = (
       return {
         ...state,
         concInputValues: action.payload as ConcInputValue[],
+      }
+    }
+
+    case 'setFile': {
+      return {
+        ...state,
+        files: [...state.files, action.payload as ProcessFile],
+      }
+    }
+
+    case 'addFiles': {
+      return {
+        ...state,
+        files: [...state.files, ...(action.payload as ProcessFile[])],
       }
     }
 
