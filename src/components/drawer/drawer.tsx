@@ -17,14 +17,14 @@ const Drawer = ({ ...props }: DrawerProps) => {
     setDrawerOpen,
   } = React.useContext(GrafContext)
   return (
-    <div className='z-0 mr-2 flex max-h-[calc(90vh-3rem)] '>
+    <div className='z-0 mr-2 flex'>
       <div className={cn(!drawerOpen && 'hidden', 'max-w-[240px]')}>
-        <FileSort />
+        <FileSort maxHeight='h-[calc(100vh-3rem)]' />
       </div>
       <Button
         variant='ghost'
         size='icon'
-        className=' inline-flex h-full w-[10px] cursor-pointer items-center  justify-center rounded-l  hover:bg-gradient-to-l hover:from-primary hover:via-secondary hover:to-secondary'
+        className='inline-flex h-full w-[10px] cursor-pointer items-center  justify-center rounded-l  hover:bg-gradient-to-l hover:from-primary hover:via-secondary hover:to-secondary'
         asChild
         onClick={() => setDrawerOpen(!drawerOpen)}
       >

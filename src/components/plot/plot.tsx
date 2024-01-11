@@ -37,6 +37,7 @@ const PlotlyChart = ({
       data={data}
       layout={{
         ...layout,
+        autosize: true,
         plot_bgcolor: t === 'dark' ? '#000' : '#fff',
         paper_bgcolor: t === 'dark' ? '#000' : '#fff',
 
