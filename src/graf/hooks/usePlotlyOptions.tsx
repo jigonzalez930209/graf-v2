@@ -11,8 +11,8 @@ import { useData } from './useData'
 
 const StaticValues = ({ drawerOpen = true, width = 720, height = 540 }) => ({
   autosize: true,
-  width: drawerOpen ? width - 300 : width * 0.98,
-  height: drawerOpen ? height - 95 : height - 95,
+  width: drawerOpen ? width - 270 : width * 0.98,
+  height: drawerOpen ? height - 53 : height - 53,
   legend: {
     x: -5,
     y: 1,
