@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Plotly from 'react-plotly.js'
+import { useScreen } from 'usehooks-ts'
 
 type PlotProps = {
   data: any[]
@@ -13,6 +14,8 @@ const Plot = (props: PlotProps) => {
   const { data, layout, config, exportFileName, isNeccessaryRefreshZoom } =
     props
 
+  const { width, height } = useScreen()
+
   const [zoomState, setZoomState] = React.useState<{
     xRange: number[]
     yRange: number[]
@@ -23,11 +26,8 @@ const Plot = (props: PlotProps) => {
     setZoomState(null)
   }, [isNeccessaryRefreshZoom])
 
-  // console.log({ data, layout, config, exportFileName, isNeccessaryRefreshZoom })
-
   return (
     <div
-      className=''
       id={exportFileName}
       style={{
         position: 'relative',
@@ -44,6 +44,8 @@ const Plot = (props: PlotProps) => {
         layout={{
           ...layout,
           autosize: true,
+          width: width * 0.46,
+          height: height * 0.5,
           margin: {
             autoexpand: true,
             automargin: true,
