@@ -1326,7 +1326,7 @@ dependencies = [
 
 [[package]]
 name = "graf-v2"
-version = "0.3.4"
+version = "0.3.5"
 dependencies = [
  "serde",
  "serde_json",
