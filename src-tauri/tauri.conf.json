@@ -10,6 +10,14 @@
     "productName": "graf-v2"
   },
   "tauri": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://tauri-update-server-master-v7t8.vercel.app/{{target}}/{{current_version}}"
+      ],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5UVVBMmp3L1RUTUNrYk1INzFCdkozZDhPT28zcWdPQ0F1OC8wR2g0ckIrZ0FBQkFBQUFBQUFBQUFBQUlBQUFBQUZUb2dzWTNUS1M2VDlBOVpTeHBsMDJxWnNNeEtOZ2owbS9wSU0vSHd3ZXc0TGYzN2YyY2RQN1JvUjY0bGM2alBKU3N4L2VaZURCenEycXczcWp4QmxOWTVEcWRId0NHRDFWdjBKZFQxSHRqK0NpRkR6R3hwNkhvVVdSai9SbElKWVVaT24zeXBPSTQ9Cg"
+    },
     "bundle": {
       "category": "Education",
       "identifier": "com.graf-v2.dev",
@@ -41,6 +49,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
+
       "windows": {
         "allowDowngrades": false,
         "wix": {
