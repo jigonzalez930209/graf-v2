@@ -21,9 +21,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        uses: dhkatz/get-version-action@v3.0.0
-      - run: echo ${{ steps.get_version.outputs.version }}
-      - run: echo ${{ steps.get_version.outputs.version-without-v }}
+        uses: battila7/get-version-action@v2
 
       - name: Get tag message
         id: tag
@@ -51,11 +49,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get version
+       - name: Get version
         id: get_version
-        uses: dhkatz/get-version-action@v3.0.0
-      - run: echo ${{ steps.get_version.outputs.version }}
-      - run: echo ${{ steps.get_version.outputs.version-without-v }}
+        uses: battila7/get-version-action@v2
 
       - uses: pnpm/action-setup@v2
         with:
