@@ -1,3 +1,6 @@
+import React from 'react'
+import { relaunch } from '@tauri-apps/plugin-process'
+import { check } from '@tauri-apps/plugin-updater'
 import { SnackbarProvider } from 'notistack'
 
 import { cn } from '@/lib/utils'
@@ -10,6 +13,22 @@ import { LoadingProvider } from './graf/context/Loading'
 import Graf from './graf/Graf'
 
 const App = () => {
+  const updater = React.useCallback(async () => {
+    const update = await check()
+      .then((x) => x)
+      .catch((e) => e)
+    console.log('update', update)
+
+    if (update?.body?.length > 0) {
+      await update.downloadAndInstall()
+      await relaunch()
+    }
+  }, [])
+
+  React.useEffect(() => {
+    updater()
+  }, [updater])
+
   return (
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
       <ToastProvider>
