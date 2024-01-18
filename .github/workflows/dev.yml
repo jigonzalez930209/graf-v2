@@ -76,7 +76,7 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
 
       - name: build tauri renderer
-        run: pnpm tauri build
+        run: pnpm build
 
       - uses: actions/upload-artifact@v3
         with:
