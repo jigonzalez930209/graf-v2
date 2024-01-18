@@ -55,7 +55,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2
         with:
-          version: 8.6.0
+          version: 8.14.1
 
       - name: setup node
         uses: actions/setup-node@v3
@@ -81,7 +81,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: tauri-renderer
-          path: dist/tauri/
+          path: dist/
 
   build-tauri:
     needs: [create-release, build-tauri-renderer]
@@ -95,12 +95,6 @@ jobs:
           - os: ubuntu-latest
             arch: x86_64
             rust_target: x86_64-unknown-linux-gnu
-          - os: macos-latest
-            arch: x86_64
-            rust_target: x86_64-apple-darwin
-          - os: macos-latest
-            arch: aarch64
-            rust_target: aarch64-apple-darwin
           - os: windows-latest
             arch: x86_64
             rust_target: x86_64-pc-windows-msvc
@@ -115,7 +109,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2
         with:
-          version: 8.6.0
+          version: 8.14.1
 
       - name: setup node
         uses: actions/setup-node@v3
@@ -157,7 +151,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: tauri-renderer
-          path: dist/tauri
+          path: dist/
 
       - name: Install Cargo Tauri for info
         run: cargo install tauri-cli --version "^2.0.0-alpha"
@@ -194,7 +188,7 @@ jobs:
   publish-release:
     permissions:
       contents: write
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [create-release, build-tauri]
 
     steps:
