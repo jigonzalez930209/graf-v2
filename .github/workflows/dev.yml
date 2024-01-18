@@ -49,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-       - name: Get version
+      - name: Get version
         id: get_version
         uses: battila7/get-version-action@v2
 
