@@ -2,7 +2,7 @@ name: Dev
 
 on:
   push:
-    tags: [ v\d+\.\d+\.\d+ ]
+    tags: [v\d+\.\d+\.\d+]
     branches:
       - dev
 
@@ -14,7 +14,7 @@ jobs:
     outputs:
       release_id: ${{ steps.create-release.outputs.id }}
       release_upload_url: ${{ steps.create-release.outputs.upload_url }}
-      release_body: "${{ steps.tag.outputs.message }}"
+      release_body: '${{ steps.tag.outputs.message }}'
 
     steps:
       - uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
           draft: true
           name: ${{ steps.get_version.outputs.version }}
           tag: ${{ steps.get_version.outputs.version }}
-          body: "${{ steps.tag.outputs.message }}"
+          body: '${{ steps.tag.outputs.message }}'
 
   build-tauri-renderer:
     needs: create-release
@@ -68,7 +68,7 @@ jobs:
 
       - name: Change Version
         env:
-          VERSION: "${{ steps.get_version.outputs.version-without-v }}"
+          VERSION: '${{ steps.get_version.outputs.version-without-v }}'
         run: make change-version change-package-version
 
       - uses: oNaiPs/secrets-to-env-action@v1
@@ -137,7 +137,7 @@ jobs:
 
       - name: Change Version
         env:
-          VERSION: "${{ steps.get_version.outputs.version-without-v }}"
+          VERSION: '${{ steps.get_version.outputs.version-without-v }}'
         run: make change-version change-package-version
 
       - uses: actions/download-artifact@v3
@@ -156,7 +156,7 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
 
       - name: Build Tauri App
-      - uses: tauri-apps/tauri-action@0
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
@@ -166,7 +166,6 @@ jobs:
           releaseBody: ${{ needs.create-release.outputs.release_body }}
           tauriScript: cargo tauri
 
-  
   publish-release:
     permissions:
       contents: write
