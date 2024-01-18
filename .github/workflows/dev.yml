@@ -2,6 +2,7 @@ name: Dev
 
 on:
   push:
+    tags: [ v\d+\.\d+\.\d+ ]
     branches:
       - dev
 
