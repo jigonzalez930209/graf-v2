@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { UpdateIcon } from '@radix-ui/react-icons'
 import { getName, getTauriVersion, getVersion } from '@tauri-apps/plugin-app'
@@ -22,10 +22,16 @@ export function AboutDialog() {
   const [name, setName] = useState('')
   const [tauriVersion, setTauriVersion] = useState('')
   const [arc, setArc] = useState('')
-  getVersion().then((x) => setVersion(x))
-  getName().then((x) => setName(x))
-  getTauriVersion().then((x) => setTauriVersion(x))
-  arch().then((x) => setArc(x))
+  const handleInitialState = React.useCallback(async () => {
+    // await getVersion().then((x) => setVersion(x))
+    // await getName().then((x) => setName(x))
+    // await getTauriVersion().then((x) => setTauriVersion(x))
+    // await arch().then((x) => setArc(x))
+  }, [])
+
+  React.useEffect(() => {
+    handleInitialState()
+  }, [handleInitialState])
 
   return (
     <DialogContent className='overflow-clip pb-2'>

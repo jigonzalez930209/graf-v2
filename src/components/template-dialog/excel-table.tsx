@@ -44,29 +44,6 @@ const ExcelTable = ({
   })
 
   // TODO: add a button to calculate the formula in next iteration
-  // const Calculate = () => {
-  //   console.log(settings.data)
-  //   const hypP = HyperFormula.buildFromSheets(
-  //     {
-  //       Sheet1: settings.data.map((i) =>
-  //         Object.values(i).map((v) => v as string)
-  //       ),
-  //     },
-  //     { licenseKey: 'internal-use-in-handsontable' }
-  //   )
-  //   console.log({
-  //     hyperformulaInstance: hyperformulaInstance.getAllSheetsValues(),
-  //     hypP: hypP.getAllSheetsValues(),
-  //   })
-
-  //   settings.data
-  //     .map((i) => Object.values(i).map((v) => v as string))
-  //     .map((a) => {
-  //       console.log(a)
-  //       return a
-  //     })
-  //     .forEach((b) => console.log(hypP.calculateFormula(b[2], 0)))
-  // }
 
   const handleSelection = (row: number, col: number) => {
     if (col < 0) {

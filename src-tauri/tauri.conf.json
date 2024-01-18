@@ -1,4 +1,5 @@
 {
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devPath": "http://localhost:2023",
@@ -10,6 +11,13 @@
   },
   "tauri": {
     "bundle": {
+      "updater": {
+        "active": false,
+        "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI2RDU1OEIzRTZCRDg5QjMKUldTemliM21zMWpWSnJsekVBU0RXVElwSng2NVpsRXdsQlgwa2hnSDRNTmhwMXFGaWNPdURJc2QK",
+        "windows": {
+          "installMode": "basicUi"
+        }
+      },
       "category": "Education",
       "identifier": "com.graf-v2.dev",
       "publisher": "jigonzalez930209",
@@ -25,13 +33,7 @@
       "deb": {
         "depends": []
       },
-      "icon": [
-        "icons/graph-icon16.ico",
-        "icons/graph-icon32.ico",
-        "icons/graph-icon64.ico",
-        "icons/graph-icon128.ico",
-        "icons/graph-icon128.ico"
-      ],
+      "icon": ["icons/graph-icon128.ico", "icons/graph-icon128.ico"],
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -40,6 +42,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
+
       "windows": {
         "allowDowngrades": false,
         "wix": {
@@ -54,7 +57,8 @@
         },
         "timestampUrl": "",
         "nsis": {
-          "installerIcon": "./icons/graph-icon128.ico"
+          "installerIcon": "./icons/graph-icon128.ico",
+          "installMode": "both"
         }
       }
     },
@@ -63,25 +67,13 @@
     },
 
     "security": {
-      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'; connect-src ipc: http://ipc.localhost",
-      "dangerousRemoteDomainIpcAccess": [
-        {
-          "scheme": "http",
-          "domain": "tauri.localhost",
-          "windows": ["main"],
-          "plugins": [
-            "app",
-            "os",
-            "shell",
-            "window",
-            "event",
-            "fs",
-            "storage",
-            "dialog",
-            "http"
-          ]
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": {
+          "allow": ["$CACHE/**", "$CONFIG/**", "$APPCACHE/**"]
         }
-      ]
+      }
     },
     "windows": [
       {
@@ -96,5 +88,27 @@
         "contentProtected": false
       }
     ]
+  },
+
+  "plugins": {
+    "http": {
+      "all": true,
+      "request": true,
+      "scope": ["https://*", "http://*"]
+    },
+    "fs": {
+      "scope": {
+        "allow": ["**", "$CONFIG/*/**", "$APPCONFIG/**", "$APPCACHE/**"]
+      }
+    },
+    "shell": {
+      "open": true
+    },
+
+    "updater": {
+      "endpoints": [
+        "https://github.com/jigonzalez930209/graf-v2/releases/latest/download/latest.json"
+      ]
+    }
   }
 }

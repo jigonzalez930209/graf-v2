@@ -2,7 +2,6 @@ import * as React from 'react'
 import { GrafContext } from '@/graf/context/GraftContext'
 import { useData } from '@/graf/hooks/useData'
 import { readAllFiles, readFilesUsingTauriProcess } from '@/graf/utils'
-import { listen } from '@tauri-apps/api/event'
 
 import {
   MenubarContent,
@@ -38,21 +37,7 @@ export const ProjectMenu = () => {
     )
   }, [])
 
-  const handleFileDropChange = React.useCallback(async () => {
-    listen('tauri://file-drop', async (event) => {
-      const files = await readAllFiles(event.payload)
-      if (files.contents.length) {
-        setLoading(true)
-        updateData(await files.contents)
-        setLoading(false)
-      }
-      if (files.notSupported.length)
-        t.toast({
-          title: 'Error Reading Files',
-          description: `Not supported files: ${files.notSupported.join(', ')}`,
-        })
-    })
-  }, [])
+  const handleFileDropChange = React.useCallback(async () => {}, [])
 
   React.useEffect(() => {
     handleFileDropChange()
