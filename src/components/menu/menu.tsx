@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import { getName, getVersion } from '@tauri-apps/plugin-app'
 import { SettingsIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -48,11 +47,11 @@ export function Menu() {
 
   React.useEffect(() => {
     let name = ''
-    getName().then((x) =>
-      getVersion()
-        .then((y) => (name = `${x}_${y}`))
-        .finally(() => setName(name))
-    )
+    // getName().then((x) =>
+    //   getVersion()
+    //     .then((y) => (name = `${x}_${y}`))
+    //     .finally(() => setName(name))
+    // )
   }, [window.__TAURI_METADATA__])
 
   return (

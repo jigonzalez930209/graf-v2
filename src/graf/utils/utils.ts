@@ -1,6 +1,6 @@
 import { createSecureContext } from 'tls'
 import { open, save } from '@tauri-apps/plugin-dialog'
-import { readBinaryFile, writeBinaryFile } from '@tauri-apps/plugin-fs'
+import { readFile, writeFile } from '@tauri-apps/plugin-fs'
 import _ from 'lodash'
 import { Store } from 'tauri-plugin-store-api'
 import { read, utils, write } from 'xlsx'
@@ -40,7 +40,7 @@ import { IGraftImpedanceType } from './../interfaces/interfaces'
 //   });
 
 //   /* read data into a Uint8Array */
-//   const d = await readBinaryFile(selected);
+//   const d = await readFile(selected);
 
 //   /* parse with SheetJS */
 //   const wb = read(d);

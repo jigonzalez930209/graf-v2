@@ -5,7 +5,7 @@ import {
   Variables,
 } from '@/graf/utils/import-dialog-interfaces'
 import { open, save } from '@tauri-apps/plugin-dialog'
-import { metadata, readBinaryFile } from '@tauri-apps/plugin-fs'
+import { readFile } from '@tauri-apps/plugin-fs'
 import { Store } from '@tauri-apps/plugin-store'
 import _ from 'lodash'
 import { read, utils, write } from 'xlsx'
@@ -58,7 +58,7 @@ const Utf8ArrayToStr = (array: Uint8Array): string => {
 const readFileContents = async (file) => {
   return new Promise<Uint8Array>((resolve, reject) => {
     try {
-      resolve(readBinaryFile(file.path))
+      resolve(readFile(file.path))
     } catch (error) {
       reject(error)
     }

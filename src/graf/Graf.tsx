@@ -1,5 +1,4 @@
 import React from 'react'
-import { listen } from '@tauri-apps/api/event'
 import { Loader } from 'lucide-react'
 import { SnackbarProvider } from 'notistack'
 
@@ -33,22 +32,7 @@ const Graf = () => {
     )
   }, [])
 
-  const handleFileDropChange = React.useCallback(async () => {
-    // if (!window.__TAURI_METADATA__) {
-    //   console.log('handleFileDropChange', window.__TAURI_METADATA__)
-    //   return
-    // }
-    listen('tauri://file-drop', async (event) => {
-      const files = await readAllFiles(event.payload)
-      if (files.contents.length) {
-        setLoading(true)
-        updateData(await files.contents)
-        setLoading(false)
-      }
-      if (files.notSupported.length) {
-      }
-    })
-  }, [loading])
+  const handleFileDropChange = React.useCallback(async () => {}, [loading])
 
   React.useEffect(() => {
     handleFileDropChange()
