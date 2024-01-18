@@ -53,7 +53,9 @@ jobs:
 
       - name: Get version
         id: get_version
-        uses: battila7/get-version-action@v2
+        uses: dhkatz/get-version-action@v3.0.0
+      - run: echo ${{ steps.get_version.outputs.version }}
+      - run: echo ${{ steps.get_version.outputs.version-without-v }}
 
       - uses: pnpm/action-setup@v2
         with:
