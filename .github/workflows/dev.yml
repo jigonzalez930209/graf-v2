@@ -156,7 +156,7 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
 
       - name: Build Tauri App
-      - uses: tauri-apps/tauri-action@dev
+      - uses: tauri-apps/tauri-action@0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
