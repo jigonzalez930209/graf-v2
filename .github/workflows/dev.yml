@@ -21,6 +21,8 @@ jobs:
       - name: Get version
         id: get_version
         uses: battila7/get-version-action@v2
+      - run: echo ${{ steps.get_version.outputs.version }}
+      - run: echo ${{ steps.get_version.outputs.version-without-v }}
 
       - name: Get tag message
         id: tag
