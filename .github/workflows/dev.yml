@@ -54,6 +54,8 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: setup node
         uses: actions/setup-node@v3
@@ -106,6 +108,8 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: setup node
         uses: actions/setup-node@v3
